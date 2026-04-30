@@ -21,124 +21,126 @@
     }
     .hidden { display: none !important; }
     
-    /* MODAL & AUTH */
+    /* AUTH MODAL */
     #auth-overlay {
       position: fixed; inset: 0;
       background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
       display: flex; align-items: center; justify-content: center;
-      z-index: 999; height: 100dvh; overflow: hidden; padding: 16px;
+      z-index: 999; height: 100dvh; padding: 16px;
     }
     #auth-box {
       background: var(--card); border-radius: 24px; padding: 24px;
-      width: 100%; max-width: 360px; max-height: 85vh;
-      overflow-y: auto; overscroll-behavior: contain;
+      width: 100%; max-width: 360px;
       box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 12px;
     }
-    #auth-box::-webkit-scrollbar { width: 4px; }
-    #auth-box::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-    .auth-title { text-align: center; color: var(--primary); font-size: 26px; font-weight: 700; margin-bottom: 4px; }
+    .auth-title { text-align: center; color: var(--primary); font-size: 26px; font-weight: 700; }
     .auth-sub { text-align: center; font-size: 14px; color: var(--muted); font-style: italic; margin-bottom: 8px; }
     .input { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 12px; font-size: 15px; background: var(--light); outline: none; }
     .input:focus { border-color: var(--primary); }
-    .btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 500; cursor: pointer; transition: 0.2s; }
+    .btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 500; cursor: pointer; }
     .btn:active { transform: scale(0.98); }
     .btn.secondary { background: var(--muted); }
-    .btn.google { background: white; color: #333; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .auth-divider { display: flex; align-items: center; gap: 10px; margin: 8px 0; color: var(--muted); font-size: 12px; }
-    .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-    .auth-links { text-align: center; font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .auth-links { text-align: center; font-size: 13px; color: var(--muted); }
     .auth-links span { color: var(--primary); cursor: pointer; font-weight: 500; }
     .msg { text-align: center; font-size: 13px; color: var(--primary); min-height: 18px; }
     
-    /* APP LAYOUT */
+    /* APP PHONE CONTAINER - FIJO */
     .phone {
       background: var(--card); border-radius: 36px; border: 1px solid var(--border);
       max-width: 380px; width: 100%; overflow: hidden; box-shadow: var(--shadow);
       position: relative; height: 680px; display: flex; flex-direction: column;
     }
     .statusbar { padding: 10px 20px 6px; display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); background: var(--card); }
-    .screen { background: var(--bg); flex: 1; overflow-y: auto; position: relative; }
+    .screen { background: var(--bg); flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; }
     .topbar { background: var(--card); padding: 16px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
-    .topbar h1 { font-size: 22px; color: var(--primary); font-weight: 700; letter-spacing: -0.5px; }
+    .topbar h1 { font-size: 22px; color: var(--primary); font-weight: 700; }
     .topbar p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    
+    /* PAGINAS */
     .page { display: none; padding: 16px; min-height: 100%; }
     .page.active { display: block; }
-    .tabs { display: flex; background: var(--card); border-top: 1px solid var(--border); padding: 8px 0 10px; }
-    .tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: var(--muted); cursor: pointer; transition: 0.2s; }
+    
+    /* TABS */
+    .tabs { display: flex; background: var(--card); border-top: 1px solid var(--border); padding: 8px 0 10px; flex-shrink: 0; }
+    .tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: var(--muted); cursor: pointer; }
     .tab.active { color: var(--primary); font-weight: 600; }
     .tab-icon { font-size: 20px; }
     
-    /* COMPONENTES */
-    .recipe-card, .feed-card { background: var(--card); border-radius: var(--radius); padding: 14px; margin-bottom: 14px; border: 1px solid var(--border); }
+    /* CHIPS */
+    .chips { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; margin-bottom: 12px; }
+    .chips::-webkit-scrollbar { display: none; }
+    .tag { background: var(--light); padding: 6px 12px; border-radius: 20px; font-size: 12px; color: var(--muted); border: 1px solid var(--border); white-space: nowrap; cursor: pointer; }
+    .tag.active { background: var(--primary); color: white; border-color: var(--primary); }
+    
+    /* DEBATE CARD */
+    .debate-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+    .debate-title { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+    .debate-options { display: flex; gap: 8px; }
+    .debate-btn { flex: 1; padding: 10px; background: rgba(255,255,255,0.2); border: none; border-radius: 10px; color: white; font-size: 13px; cursor: pointer; }
+    
+    /* RECIPE CARDS */
+    .recipe-card { background: var(--card); border-radius: var(--radius); padding: 14px; margin-bottom: 14px; border: 1px solid var(--border); }
     .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .avatar { width: 36px; height: 36px; border-radius: 50%; background: #E8F0FE; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #1A73E8; font-weight: 600; flex-shrink: 0; }
     .meta { font-size: 12px; color: var(--muted); }
     .card-title { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
     .card-story { font-size: 14px; color: #444; line-height: 1.5; margin-bottom: 10px; }
     .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-    .tag { background: var(--light); padding: 4px 10px; border-radius: 20px; font-size: 12px; color: var(--muted); border: 1px solid var(--border); cursor: pointer; }
-    .tag.active { background: var(--primary); color: white; border-color: var(--primary); }
-    .actions { display: flex; gap: 16px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); }
-    .action { cursor: pointer; }
-    .action:hover { color: var(--primary); }
-    .loading { text-align: center; padding: 40px 16px; color: var(--muted); font-size: 14px; }
-    .empty-state { text-align: center; padding: 40px 16px; color: var(--muted); }
     
+    /* ACCIONES (LIKE, COMENTAR, GUARDAR) */
+    .actions { display: flex; gap: 16px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); }
+    .action { cursor: pointer; display: flex; align-items: center; gap: 4px; }
+    .action:hover { color: var(--primary); }
+    .action.liked { color: var(--primary); }
+    
+    /* COMENTARIOS */
+    .comments-section { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .comment { display: flex; gap: 8px; margin-bottom: 8px; }
+    .comment-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--light); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+    .comment-content { flex: 1; background: var(--light); padding: 8px; border-radius: 12px; }
+    .comment-author { font-size: 12px; font-weight: 600; color: var(--text); }
+    .comment-text { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .comment-input { display: flex; gap: 8px; margin-top: 10px; }
+    .comment-input input { flex: 1; padding: 8px 12px; border: 1px solid var(--border); border-radius: 20px; font-size: 13px; outline: none; }
+    .comment-input button { padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 20px; font-size: 13px; cursor: pointer; }
+    
+    /* PERFIL */
     .profile-header { text-align: center; padding: 20px 0 10px; }
     .big-avatar { width: 72px; height: 72px; border-radius: 50%; background: #FAE8E2; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 10px; }
     .stats { display: flex; justify-content: center; gap: 24px; margin: 14px 0; }
-    .stat { text-align: center; cursor: pointer; }
+    .stat { text-align: center; }
     .stat-num { font-size: 18px; font-weight: 700; color: var(--text); }
     .stat-lab { font-size: 12px; color: var(--muted); }
-    .badge-pro { background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; margin: 6px auto; display: inline-block; }
     .features { background: var(--light); padding: 12px; border-radius: 12px; margin: 12px 0; }
     .feature-item { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 6px; }
-    .feature-item:last-child { margin-bottom: 0; }
     .recipe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
-    .recipe-grid-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px; cursor: pointer; text-align: center; }
+    .recipe-grid-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px; text-align: center; }
     .recipe-grid-item .emoji { font-size: 32px; margin-bottom: 6px; }
-    .recipe-grid-item .title { font-size: 12px; font-weight: 600; line-height: 1.3; }
+    .recipe-grid-item .title { font-size: 12px; font-weight: 600; }
     
-    .chips { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; margin-bottom: 8px; }
-    .chips::-webkit-scrollbar { display: none; }
-    .debate-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 16px; padding: 16px; margin-bottom: 16px; }
-    .debate-title { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
-    .debate-options { display: flex; gap: 8px; }
-    .debate-btn { flex: 1; padding: 10px; background: rgba(255,255,255,0.2); border: none; border-radius: 10px; color: white; font-size: 13px; cursor: pointer; }
-    .debate-btn:hover { background: rgba(255,255,255,0.3); }
+    .loading { text-align: center; padding: 40px; color: var(--muted); }
+    .empty-state { text-align: center; padding: 40px; color: var(--muted); }
   </style>
 </head>
 <body>
 
-  <!-- MODAL DE AUTENTICACIÓN -->
+  <!-- AUTH -->
   <div id="auth-overlay">
     <div id="auth-box">
       <h2 class="auth-title">Sobre Gustos 🍳</h2>
       <p class="auth-sub">ahora sí, ¿estará todo escrito...? 🤔</p>
-      
       <input class="input" id="auth-email" type="email" placeholder="Email">
       <input class="input" id="auth-pass" type="password" placeholder="Contraseña (mín 6)">
-      <input class="input" id="auth-name" type="text" placeholder="Nombre visible (ej: Chela)">
-      <input class="input" id="auth-user" type="text" placeholder="@usuario (sin espacios)">
-      
+      <input class="input" id="auth-name" type="text" placeholder="Nombre visible">
+      <input class="input" id="auth-user" type="text" placeholder="@usuario">
       <button class="btn" onclick="handleAuth('register')">Crear cuenta</button>
       <button class="btn secondary" onclick="handleAuth('login')">Entrar</button>
-      
-      <div class="auth-divider">o continuá con</div>
-      
-      <button class="btn google" onclick="signInWithGoogle()">
-        <svg width="18" height="18" viewBox="0 0 18 18"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/><path d="M8.999 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 8.999 18z" fill="#34A853"/><path d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71s.102-1.17.282-1.71V4.958H.957A8.997 8.997 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M8.999 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 8.999 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29c.708-2.127 2.692-3.71 5.035-3.71z" fill="#EA4335"/></svg>
-        Continuar con Google
-      </button>
-      
-      <div class="auth-links">
-        <span onclick="skipAuth()">Seguir viendo sin registrarme</span>
-      </div>
+      <div class="auth-links"><span onclick="skipAuth()">Seguir viendo sin registrarme</span></div>
       <p class="msg" id="auth-msg"></p>
     </div>
   </div>
 
-  <!-- APP PRINCIPAL -->
+  <!-- APP -->
   <div id="app" class="hidden">
     <div class="phone">
       <div class="statusbar"><span>9:41</span><span>📶 🔋</span></div>
@@ -149,7 +151,7 @@
           <p id="page-sub">recetas con historia ✶ opinión incluida</p>
         </div>
 
-        <!-- PÁGINA INICIO -->
+        <!-- INICIO -->
         <div id="p-home" class="page active">
           <div class="chips">
             <span class="tag active">Todo</span>
@@ -158,73 +160,54 @@
             <span class="tag">🫕 Guisos</span>
             <span class="tag">🍰 Postres</span>
             <span class="tag">🌮 Rápido</span>
-            <span class="tag">🥗 Liviano</span>
           </div>
           
           <div class="debate-card">
-            <div class="debate-title">🔥 Debate del día: ¿Milanesa con limón o sin limón?</div>
+            <div class="debate-title">🔥 Debate: ¿Milanesa con limón?</div>
             <div class="debate-options">
-              <button class="debate-btn" onclick="voteDebate('con')">🍋 Con limón</button>
-              <button class="debate-btn" onclick="voteDebate('sin')">❌ Sin limón</button>
+              <button class="debate-btn" onclick="voteDebate('con')">🍋 Con</button>
+              <button class="debate-btn" onclick="voteDebate('sin')">❌ Sin</button>
             </div>
           </div>
           
           <div id="feed-list" class="loading">Cargando recetas...</div>
         </div>
 
-        <!-- PÁGINA COMUNIDAD -->
+        <!-- COMUNIDAD -->
         <div id="p-feed" class="page">
-          <div id="community-list" class="loading">Cargando comunidad...</div>
+          <div id="community-list" class="loading">Cargando...</div>
         </div>
 
-        <!-- PÁGINA AGREGAR -->
+        <!-- AGREGAR -->
         <div id="p-add" class="page">
           <input class="input" id="r-title" placeholder="Nombre del plato">
-          <div class="chips" style="margin: 8px 0;">
-            <span class="tag" onclick="setEmoji('🍝')"></span>
-            <span class="tag" onclick="setEmoji('🥩')"></span>
-            <span class="tag" onclick="setEmoji('🫕')"></span>
-            <span class="tag" onclick="setEmoji('🍰')">🍰</span>
-            <span class="tag" onclick="setEmoji('')">🥗</span>
-            <span class="tag" onclick="setEmoji('')">🍞</span>
-          </div>
-          <textarea class="input" id="r-story" rows="3" placeholder="La historia detrás (opcional pero recomendado 😉)"></textarea>
-          <input class="input" id="r-tags" placeholder="Etiquetas (separá con coma)">
-          <button class="btn" id="btn-publish" onclick="publishRecipe()">Publicar receta 🚀</button>
+          <textarea class="input" id="r-story" rows="3" placeholder="La historia detrás..."></textarea>
+          <input class="input" id="r-tags" placeholder="Etiquetas (coma)">
+          <button class="btn" onclick="publishRecipe()">Publicar 🚀</button>
         </div>
 
-        <!-- PÁGINA PERFIL -->
+        <!-- PERFIL -->
         <div id="p-profile" class="page">
           <div class="profile-header">
-            <div class="big-avatar" id="prof-avatar">👨‍🍳</div>
+            <div class="big-avatar">👨‍🍳</div>
             <div id="prof-name" style="font-size:18px;font-weight:600;">Usuario</div>
             <div id="prof-user" style="font-size:13px;color:var(--muted);">@usuario</div>
-            <div id="prof-badge" class="badge-pro hidden"> Cocinero Pro</div>
-            
             <div class="stats">
-              <div class="stat" onclick="showMyRecipes()"><div class="stat-num" id="stat-recetas">0</div><div class="stat-lab">Recetas</div></div>
-              <div class="stat" onclick="showFollowers()"><div class="stat-num" id="stat-followers">0</div><div class="stat-lab">Seguidores</div></div>
+              <div class="stat"><div class="stat-num" id="stat-recetas">0</div><div class="stat-lab">Recetas</div></div>
               <div class="stat"><div class="stat-num" id="stat-likes">0</div><div class="stat-lab">Likes</div></div>
             </div>
-            
-            <button id="btn-follow" class="btn" style="max-width:200px;margin:10px auto;display:none;" onclick="toggleFollow(window.viewingProfileUid)">Seguir</button>
           </div>
-
           <div class="features">
-            <div class="feature-item">📖 Ver recetas <span style="color:var(--muted);margin-left:auto;">Disponible</span></div>
-            <div class="feature-item">❤️ Dar likes y guardar <span style="color:var(--muted);margin-left:auto;">Requiere cuenta</span></div>
-            <div class="feature-item">💬 Comentar y opinar <span style="color:var(--muted);margin-left:auto;">Requiere cuenta</span></div>
-            <div class="feature-item">🚀 Publicar tus recetas <span style="color:var(--muted);margin-left:auto;">Requiere cuenta</span></div>
+            <div class="feature-item">📖 Ver recetas <span style="margin-left:auto;color:var(--muted);">OK</span></div>
+            <div class="feature-item">❤️ Likes <span style="margin-left:auto;color:var(--muted);">Requiere cuenta</span></div>
+            <div class="feature-item">💬 Comentarios <span style="margin-left:auto;color:var(--muted);">Requiere cuenta</span></div>
           </div>
-
           <h3 style="font-size:14px;color:var(--muted);margin:12px 0 8px;">Mis recetas</h3>
           <div id="profile-recipes-grid" class="recipe-grid"></div>
-          
           <button class="btn secondary" onclick="doLogout()">Cerrar sesión</button>
         </div>
       </div>
 
-      <!-- BARRA INFERIOR -->
       <div class="tabs">
         <div class="tab active" onclick="nav('home')"><span class="tab-icon">🏠</span>Inicio</div>
         <div class="tab" onclick="nav('feed')"><span class="tab-icon">💬</span>Comunidad</div>
@@ -234,64 +217,43 @@
     </div>
   </div>
 
-  <!-- FIREBASE & LÓGICA -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, signInWithRedirect } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, getDocs, doc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, getDocs, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // ⬇️ CONFIGURACIÓN FIREBASE ⬇️
     const firebaseConfig = {
       apiKey: "AIzaSyB6Mx7p29ptV2p8j9F-C66AsHRGe4ASplw",
-      authDomain: "sobre-gustos.firebaseapp.com",
-      projectId: "sobre-gustos",
-      storageBucket: "sobre-gustos.firebasestorage.app",
-      messagingSenderId: "796220839975",
-      appId: "1:796220839975:web:bd3f3e93fdde3653169602"
+  authDomain: "sobre-gustos.firebaseapp.com",
+  projectId: "sobre-gustos",
+  storageBucket: "sobre-gustos.firebasestorage.app",
+  messagingSenderId: "796220839975",
+  appId: "1:796220839975:web:bd3f3e93fdde3653169602"
     };
-    // ⬆️ FIN CONFIGURACIÓN ⬆️
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const storage = getStorage(app);
     let currentUserData = null;
     const $ = id => document.getElementById(id);
     const msg = (t) => { $('auth-msg').textContent = t; setTimeout(() => $('auth-msg').textContent = '', 4000); };
 
-    // AUTENTICACIÓN EMAIL/PASS
     window.handleAuth = async (type) => {
       const email = $('auth-email').value.trim();
       const pass = $('auth-pass').value;
       const name = $('auth-name').value.trim();
-      const user = $('auth-user').value.trim().replace(/[^a-zA-Z0-9_]/g, '');
-      if (!email || pass.length < 6) return msg('Email válido y contraseña de 6+ caracteres.');
-      if (type === 'register' && (!name || !user)) return msg('Completá nombre y @usuario.');
-
-      msg('Conectando...');
+      const user = $('auth-user').value.trim();
+      if (!email || pass.length < 6) return msg('Email y contraseña válidos.');
+      if (type === 'register' && (!name || !user)) return msg('Completá todos los campos.');
+      
       try {
         if (type === 'register') {
           const cred = await createUserWithEmailAndPassword(auth, email, pass);
-          await addDoc(collection(db, "profiles"), { uid: cred.user.uid, email, name, user, createdAt: new Date(), followers: [] });
+          await addDoc(collection(db, "profiles"), { uid: cred.user.uid, email, name, user, createdAt: new Date() });
         } else {
           await signInWithEmailAndPassword(auth, email, pass);
         }
-      } catch (err) { msg(err.message.replace('Firebase: ', '')); }
-    };
-
-    // LOGIN CON GOOGLE
-    window.signInWithGoogle = async () => {
-      const provider = new GoogleAuthProvider();
-      try {
-        await signInWithPopup(auth, provider);
-      } catch (err) {
-        if (err.code === 'auth/popup-blocked') {
-          await signInWithRedirect(auth, provider);
-        } else {
-          msg('Error con Google: ' + err.message);
-        }
-      }
+      } catch (err) { msg(err.message); }
     };
 
     window.doLogout = () => signOut(auth);
@@ -301,114 +263,97 @@
       loadRecipes();
     };
 
-    // ESTADO DE SESIÓN
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         $('auth-overlay').classList.add('hidden');
         $('app').classList.remove('hidden');
-        
         const q = query(collection(db, "profiles"));
         const snapshot = await getDocs(q);
-        let profile = null;
-        snapshot.forEach(docSnap => {
-          if(docSnap.data().uid === user.uid) profile = docSnap.data();
-        });
-
-        if (!profile && user.email) {
-          const displayName = user.displayName || user.email.split('@')[0];
-          const username = user.email.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '');
-          await addDoc(collection(db, "profiles"), {
-            uid: user.uid, email: user.email, name: displayName, user: username, createdAt: new Date(), followers: []
-          });
-          profile = { uid: user.uid, email: user.email, name: displayName, user: username, followers: [] };
-        }
-
-        currentUserData = profile;
-        if(profile) {
-          $('prof-name').textContent = profile.name;
-          $('prof-user').textContent = '@' + profile.user;
+        snapshot.forEach(d => { if(d.data().uid === user.uid) currentUserData = d.data(); });
+        if(currentUserData) {
+          $('prof-name').textContent = currentUserData.name;
+          $('prof-user').textContent = '@' + currentUserData.user;
         }
         loadRecipes();
       } else {
-        currentUserData = null;
         $('auth-overlay').classList.remove('hidden');
         $('app').classList.add('hidden');
       }
     });
 
-    // SEGUIDORES
-    window.toggleFollow = async (targetUid) => {
-      if (!currentUserData) return msg('Necesitás cuenta para seguir.');
-      const profileRef = doc(db, "profiles", targetUid);
-      const isFollowing = currentUserData.followers?.includes(targetUid) || false;
-      
-      try {
-        if (isFollowing) {
-          await updateDoc(profileRef, { followers: arrayRemove(currentUserData.uid) });
-        } else {
-          await updateDoc(profileRef, { followers: arrayUnion(currentUserData.uid) });
-        }
-        msg(isFollowing ? 'Dejaste de seguir' : '¡Ahora seguís a este cocinero!');
-        loadProfileRecipes(targetUid);
-      } catch (err) { msg('Error al seguir: ' + err.message); }
-    };
-
-    // NAVEGACIÓN
     window.nav = (page) => {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       $('p-' + page).classList.add('active');
       event.currentTarget.classList.add('active');
-      const titles = { home: 'Sobre Gustos', feed: 'Comunidad', add: 'Nueva receta', profile: 'Mi perfil' };
-      const subs = { home: 'recetas con historia ✶ opinión incluida', feed: 'la comunidad habla — vos opinás', add: 'compartí lo que cocinás', profile: 'tu espacio personal' };
-      $('page-title').textContent = titles[page];
-      $('page-sub').textContent = subs[page];
+      if(page === 'home') loadRecipes();
       if(page === 'profile') loadProfileRecipes();
     };
 
-    window.setEmoji = (emoji) => {
-      const input = $('r-title');
-      input.value = emoji + ' ' + input.value;
-      input.focus();
+    window.voteDebate = (opt) => {
+      if(!currentUserData) return msg('Necesitás cuenta para votar.');
+      msg(`Votaste: ${opt === 'con' ? 'Con limón' : 'Sin limón'} ✓`);
     };
 
-    window.voteDebate = (option) => {
-      if (!currentUserData) return msg('Necesitás cuenta para votar.');
-      msg(`Votaste: ${option === 'con' ? 'Con limón' : 'Sin limón'} 🗳️`);
+    // LIKE FUNCTIONALITY
+    window.toggleLike = async (recipeId, currentLikes) => {
+      if(!currentUserData) return msg('Necesitás cuenta para dar like.');
+      const ref = doc(db, "recipes", recipeId);
+      await updateDoc(ref, { likes: increment(1) });
+      msg('¡Like agregado! ❤️');
     };
 
-    // RECETAS
+    // SAVE FUNCTIONALITY
+    window.saveRecipe = (title) => {
+      if(!currentUserData) return msg('Necesitás cuenta para guardar.');
+      msg(`Receta guardada: ${title} 📌`);
+    };
+
+    // COMMENT FUNCTIONALITY
+    window.addComment = async (recipeId, text) => {
+      if(!currentUserData) return msg('Necesitás cuenta para comentar.');
+      if(!text.trim()) return;
+      await addDoc(collection(db, "comments"), {
+        recipeId, userId: currentUserData.uid, userName: currentUserData.name,
+        text, createdAt: new Date()
+      });
+      msg('Comentario publicado! 💬');
+    };
+
     function loadRecipes() {
       const q = query(collection(db, "recipes"), orderBy("createdAt", "desc"));
       onSnapshot(q, (snapshot) => {
         const feed = $('feed-list');
         feed.innerHTML = '';
-        if (snapshot.empty) {
-          feed.innerHTML = '<div class="empty-state">Aún no hay recetas. ¡Sé el primero en publicar! 🍳</div>';
+        if(snapshot.empty) {
+          feed.innerHTML = '<div class="empty-state">Aún no hay recetas 🍳</div>';
           return;
         }
         snapshot.forEach(docSnap => {
           const r = docSnap.data();
-          const tagsHtml = (r.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
-          const dateStr = r.createdAt ? new Date(r.createdAt.toDate()).toLocaleDateString() : 'Reciente';
-          const avatarLetter = r.name ? r.name.charAt(0) : '👤';
-          
+          const tagsHtml = (r.tags||[]).map(t => `<span class="tag">${t}</span>`).join('');
           feed.innerHTML += `
-            <div class="recipe-card">
+            <div class="recipe-card" id="recipe-${docSnap.id}">
               <div class="card-header">
-                <div class="avatar">${avatarLetter}</div>
+                <div class="avatar">${r.name?.charAt(0)||'👤'}</div>
                 <div>
-                  <div style="font-weight:600;font-size:14px;">${r.name || 'Usuario'}</div>
-                  <div class="meta">@${r.user || 'anon'} · ${dateStr}</div>
+                  <div style="font-weight:600;font-size:14px;">${r.name||'Usuario'}</div>
+                  <div class="meta">@${r.user||'anon'}</div>
                 </div>
               </div>
               <div class="card-title">${r.title}</div>
               ${r.story ? `<div class="card-story">${r.story}</div>` : ''}
               <div class="tags">${tagsHtml}</div>
               <div class="actions">
-                <span class="action">❤️ ${r.likes || 0}</span>
-                <span class="action">💬 ${r.comments || 0}</span>
-                <span class="action">📌 Guardar</span>
+                <span class="action" onclick="toggleLike('${docSnap.id}', ${r.likes||0})">❤️ ${r.likes||0}</span>
+                <span class="action" onclick="toggleComments('${docSnap.id}')">💬 ${r.comments||0}</span>
+                <span class="action" onclick="saveRecipe('${r.title}')">📌 Guardar</span>
+              </div>
+              <div id="comments-${docSnap.id}" class="comments-section hidden">
+                <div class="comment-input">
+                  <input type="text" id="input-comment-${docSnap.id}" placeholder="Escribí un comentario...">
+                  <button onclick="addComment('${docSnap.id}', $('input-comment-${docSnap.id}').value)">Publicar</button>
+                </div>
               </div>
             </div>
           `;
@@ -416,74 +361,46 @@
       });
     }
 
+    window.toggleComments = (id) => {
+      $('comments-' + id).classList.toggle('hidden');
+    };
+
     window.publishRecipe = async () => {
-      if (!currentUserData) return msg('Necesitás cuenta para publicar.');
+      if(!currentUserData) return msg('Necesitás cuenta.');
       const title = $('r-title').value.trim();
       const story = $('r-story').value.trim();
-      const tags = $('r-tags').value.split(',').map(t => t.trim()).filter(Boolean);
-      if (!title) return msg('Escribí un título para la receta.');
+      const tags = $('r-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
+      if(!title) return msg('Escribí un título.');
       
-      const btn = $('btn-publish');
-      btn.disabled = true; btn.textContent = 'Publicando...';
       try {
         await addDoc(collection(db, "recipes"), {
           title, story, tags, uid: currentUserData.uid,
           name: currentUserData.name, user: currentUserData.user,
           createdAt: new Date(), likes: 0, comments: 0
         });
+        msg('¡Publicada! 🎉');
         $('r-title').value = ''; $('r-story').value = ''; $('r-tags').value = '';
-        msg('¡Receta publicada! 🎉');
         nav('home');
-      } catch (err) { msg('Error: ' + err.message); }
-      btn.disabled = false; btn.textContent = 'Publicar receta 🚀';
+      } catch(err) { msg('Error: ' + err.message); }
     };
 
-    // PERFIL Y GRID
-    window.showMyRecipes = () => { loadProfileRecipes(); };
-    window.showFollowers = () => { msg('Función en desarrollo 🚧'); };
-
-    function loadProfileRecipes(uid) {
-      window.viewingProfileUid = uid || currentUserData?.uid;
+    function loadProfileRecipes() {
       const grid = $('profile-recipes-grid');
-      grid.innerHTML = '<div style="grid-column:span 2;text-align:center;color:var(--muted);padding:20px;">Cargando...</div>';
-      
+      grid.innerHTML = '<div style="grid-column:span 2;text-align:center;padding:20px;color:var(--muted);">Cargando...</div>';
       const q = query(collection(db, "recipes"), orderBy("createdAt", "desc"));
       onSnapshot(q, (snapshot) => {
         grid.innerHTML = '';
         let count = 0;
-        snapshot.forEach(docSnap => {
-          if (docSnap.data().uid === window.viewingProfileUid) {
+        snapshot.forEach(d => {
+          if(d.data().uid === currentUserData?.uid) {
             count++;
-            const emoji = docSnap.data().title.match(/[🍝🥩🫕🍰🥗🌮🍲🍕🥘]/)?.[0] || '🍲';
-            const cleanTitle = docSnap.data().title.replace(/[🍝🥩🫕🍰🍞🌮🍕🥘]/g, '').trim();
-            grid.innerHTML += `
-              <div class="recipe-grid-item">
-                <div class="emoji">${emoji}</div>
-                <div class="title">${cleanTitle || 'Receta'}</div>
-              </div>
-            `;
+            const emoji = d.data().title.match(/[🍝🥩🫕🍰]/)?.[0] || '🍲';
+            grid.innerHTML += `<div class="recipe-grid-item"><div class="emoji">${emoji}</div><div class="title">${d.data().title}</div></div>`;
           }
         });
-        if (count === 0) grid.innerHTML = '<div style="grid-column:span 2;text-align:center;color:var(--muted);padding:20px;">Aún no publicó recetas</div>';
+        if(count === 0) grid.innerHTML = '<div style="grid-column:span 2;text-align:center;padding:20px;color:var(--muted);">Sin recetas</div>';
         $('stat-recetas').textContent = count;
       });
-
-      if (uid && uid !== currentUserData?.uid) {
-        const profileRef = doc(db, "profiles", uid);
-        onSnapshot(profileRef, (snap) => {
-          const data = snap.data();
-          $('stat-followers').textContent = data?.followers?.length || 0;
-          $('prof-badge').classList.toggle('hidden', !data?.is_pro);
-          $('btn-follow').style.display = 'block';
-          const isFollowing = data?.followers?.includes(currentUserData?.uid);
-          $('btn-follow').textContent = isFollowing ? 'Siguiendo' : 'Seguir';
-          $('btn-follow').classList.toggle('secondary', isFollowing);
-        });
-      } else {
-        $('stat-followers').textContent = currentUserData?.followers?.length || 0;
-        $('prof-badge').classList.toggle('hidden', !currentUserData?.is_pro);
-        $('btn-follow').style.display = 'none';
-      }
     }
   </script>
 </body>
