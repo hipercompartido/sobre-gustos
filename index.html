@@ -513,7 +513,7 @@
               <h1 id="page-title">Sobre Gustos</h1>
               <p id="page-sub">recetas con historia ✶ opinión incluida</p>
             </div>
-            <div class="notif-btn" onclick="showToast('¡Notificaciones próximamente! 🔔')">🔔</div>
+                        <div class="notif-btn" onclick="shareApp()">📤</div>
           </div>
           <div class="topbar-extras" id="topbar-extras">
             <div class="search-bar" id="search-bar">
@@ -785,7 +785,23 @@
       return d.toLocaleDateString('es-AR', { day:'numeric', month:'short' });
     } catch { return 'Reciente'; }
   }
-
+  window.shareApp = async function() {
+    const data = {
+      title: 'Sobre Gustos — recetas con historia',
+      text: 'Mirá esta app de recetas con historia y opinión incluida 🍳',
+      url: 'https://hipercompartido.github.io/sobre-gustos/'
+    };
+    if (navigator.share) {
+      try { await navigator.share(data); } catch {}
+    } else {
+      try {
+        await navigator.clipboard.writeText(data.url);
+        showToast('Link copiado al portapapeles 📋');
+      } catch {
+        showToast('No se pudo copiar el link');
+      }
+    }
+  };
   // ═══════════════════════════════════════════════════════════════
   // BLOQUE: AUTH MODAL - LÓGICA
   // ═══════════════════════════════════════════════════════════════
