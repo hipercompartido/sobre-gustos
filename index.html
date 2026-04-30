@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#D85A30">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Sobre Gustos</title>
+  <style>
+    :root { --bg: #F1F3F5; --card: #FFFFFF; --text: #1A1A1A; --muted: #666666; --border: #E5E5E5; --primary: #D85A30; --light: #FAF9F7; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #E0E0E0; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 16px; }
+    .hidden { display: none !important; }
+    .auth-box { background: var(--card); padding: 28px 24px; border-radius: 20px; width: 100%; max-width: 340px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .auth-box h2 { color: var(--primary); margin-bottom: 20px; text-align: center; }
+    .input { width: 100%; padding: 14px; margin-bottom: 12px; border: 1px solid var(--border); border-radius: 12px; font-size: 15px; background: var(--light); outline: none; }
+    .input:focus { border-color: var(--primary); }
+    .btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 500; cursor: pointer; margin-top: 8px; transition: 0.2s; }
+    .btn:active { transform: scale(0.98); }
+    .btn.secondary { background: var(--muted); margin-top: 8px; }
+    .msg { text-align: center; font-size: 13px; color: var(--muted); margin-top: 12px; min-height: 18px; }
+    .phone { background: var(--card); border-radius: 36px; border: 1px solid var(--border); max-width: 380px; width: 100%; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.08); position: relative; }
+    .statusbar { padding: 12px 20px 6px; display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); background: var(--card); }
+    .screen { background: var(--bg); height: 640px; overflow-y: auto; }
+    .topbar { background: var(--card); padding: 16px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+    .topbar h1 { font-size: 22px; color: var(--primary); font-weight: 700; letter-spacing: -0.5px; }
+    .topbar p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .page { display: none; padding: 16px; }
+    .page.active { display: block; }
+    .recipe-card { background: var(--card); border-radius: 16px; padding: 14px; margin-bottom: 14px; border: 1px solid var(--border); }
+    .recipe-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .avatar { width: 36px; height: 36px; border-radius: 50%; background: #E8F0FE; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #1A73E8; font-weight: 600; }
+    .meta { font-size: 12px; color: var(--muted); }
+    .recipe-title { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .recipe-story { font-size: 14px; color: #444; line-height: 1.5; margin-bottom: 10px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .tag { background: var(--light); padding: 4px 10px; border-radius: 20px; font-size: 12px; color: var(--muted); border: 1px solid var(--border); }
+    .actions { display: flex; gap: 16px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); }
+    .action { cursor: pointer; }
+    .action:hover { color: var(--primary); }
+    .tabs { display: flex; background: var(--card); border-top: 1px solid var(--border); position: sticky; bottom: 0; }
+    .tab { flex: 1; padding: 14px 0; text-align: center; font-size: 12px; color: var(--muted); cursor: pointer; transition: 0.2s; }
+    .tab.active { color: var(--primary); font-weight: 600; }
+    .tab-icon { font-size: 20px; display: block; margin-bottom: 2px; }
+    .profile-header { text-align: center; padding: 20px 0 10px; }
+    .big-avatar { width: 72px; height: 72px; border-radius: 50%; background: #FAE8E2; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 10px; }
+    .stats { display: flex; justify-content: center; gap: 30px; margin: 14px 0; }
+    .stat { text-align: center; }
+    .stat-num { font-size: 18px; font-weight: 700; color: var(--text); }
+    .stat-lab { font-size: 12px; color: var(--muted); }
+    .loading { text-align: center; padding: 40px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <!-- AUTH -->
+  <div id="auth-overlay">
+    <div class="auth-box">
+      <h2>Sobre Gustos 🍳</h2>
+      <input class="input" id="auth-email" type="email" placeholder="Email">
+      <input class="input" id="auth-pass" type="password" placeholder="Contraseña (mín 6)">
+      <input class="input" id="auth-name" type="text" placeholder="Nombre visible (ej: Chela)">
+      <input class="input" id="auth-user" type="text" placeholder="@usuario (sin espacios)">
+      <button class="btn" onclick="handleAuth('register')">Crear cuenta</button>
+      <button class="btn secondary" onclick="handleAuth('login')">Entrar</button>
+      <p class="msg" id="auth-msg"></p>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="app" class="hidden">
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="screen">
+        <div class="topbar">
+          <h1 id="page-title">Sobre Gustos</h1>
+          <p id="page-sub">recetas con historia ✶ opinión incluida</p>
+        </div>
+
+        <div id="p-home" class="page active">
+          <div id="feed-list" class="loading">Cargando recetas...</div>
+        </div>
+        <div id="p-add" class="page">
+          <input class="input" id="r-title" placeholder="Nombre del plato">
+          <textarea class="input" id="r-story" rows="4" placeholder="La historia detrás (opcional pero recomendado 😉)"></textarea>
+          <input class="input" id="r-tags" placeholder="Etiquetas (separá con coma)">
+          <button class="btn" id="btn-publish" onclick="publishRecipe()">Publicar receta 🚀</button>
+        </div>
+        <div id="p-profile" class="page">
+          <div class="profile-header">
+            <div class="big-avatar">👨‍🍳</div>
+            <div id="prof-name" style="font-size:18px;font-weight:600;">Usuario</div>
+            <div id="prof-user" style="font-size:13px;color:var(--muted);">@usuario</div>
+            <div class="stats">
+              <div class="stat"><div class="stat-num" id="stat-recetas">0</div><div class="stat-lab">Recetas</div></div>
+              <div class="stat"><div class="stat-num">12</div><div class="stat-lab">Seguidores</div></div>
+              <div class="stat"><div class="stat-num">45</div><div class="stat-lab">Likes</div></div>
+            </div>
+          </div>
+          <button class="btn secondary" onclick="doLogout()">Cerrar sesión</button>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" onclick="nav('home')"><span class="tab-icon">🏠</span>Inicio</div>
+        <div class="tab" onclick="nav('add')"><span class="tab-icon">➕</span>Agregar</div>
+        <div class="tab" onclick="nav('profile')"><span class="tab-icon">👤</span>Perfil</div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // ⬇️ PEGÁ ACÁ TU CONFIGURACIÓN DE FIREBASE (la que copiaste en el paso anterior) ⬇️
+    const firebaseConfig = {
+      apiKey: "AIzaSyB6Mx7p29ptV2p8j9F-C66AsHRGe4ASplw",
+      authDomain: "sobre-gustos.firebaseapp.com",
+      projectId: "sobre-gustos",
+      storageBucket: "sobre-gustos.firebasestorage.app",
+      messagingSenderId: "796220839975",
+      appId: "1:796220839975:web:bd3f3e93fdde3653169602"
+    };
+    // ⬆️ FIN DE LA CONFIGURACIÓN ⬆️
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let currentUserData = null;
+
+    const $ = id => document.getElementById(id);
+    const msg = (t) => { $('auth-msg').textContent = t; setTimeout(() => $('auth-msg').textContent = '', 4000); };
+
+    // REGISTRO / LOGIN
+    window.handleAuth = async (type) => {
+      const email = $('auth-email').value.trim();
+      const pass = $('auth-pass').value;
+      const name = $('auth-name').value.trim();
+      const user = $('auth-user').value.trim().replace(/[^a-zA-Z0-9_]/g, '');
+
+      if (!email || pass.length < 6) return msg('Email válido y contraseña de 6+ caracteres.');
+      if (type === 'register' && (!name || !user)) return msg('Completá nombre y @usuario.');
+
+      msg('Conectando...');
+      try {
+        if (type === 'register') {
+          const cred = await createUserWithEmailAndPassword(auth, email, pass);
+          await addDoc(collection(db, "profiles"), {
+            uid: cred.user.uid, email, name, user, createdAt: new Date()
+          });
+        } else {
+          await signInWithEmailAndPassword(auth, email, pass);
+        }
+      } catch (err) {
+        msg(err.message.replace('Firebase: ', ''));
+      }
+    };
+
+    // DETECTOR DE SESIÓN
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        $('auth-overlay').classList.add('hidden');
+        $('app').classList.remove('hidden');
+        
+        try {
+          const q = query(collection(db, "profiles"));
+          const snapshot = await getDocs(q);
+          let profile = null;
+          snapshot.forEach(doc => { if(doc.data().uid === user.uid) profile = doc.data(); });
+          if(profile) {
+            currentUserData = profile;
+            $('prof-name').textContent = profile.name;
+            $('prof-user').textContent = '@' + profile.user;
+          }
+        } catch(e) { console.log(e); }
+        
+        loadRecipes();
+      } else {
+        currentUserData = null;
+        $('auth-overlay').classList.remove('hidden');
+        $('app').classList.add('hidden');
+      }
+    });
+
+    window.doLogout = () => signOut(auth);
+
+    // NAVEGACIÓN
+    window.nav = (page) => {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      $('p-' + page).classList.add('active');
+      event.currentTarget.classList.add('active');
+      
+      const titles = { home: 'Sobre Gustos', add: 'Nueva receta', profile: 'Mi perfil' };
+      const subs = { home: 'recetas con historia ✶ opinión incluida', add: 'compartí lo que cocinás', profile: 'tu espacio personal' };
+      $('page-title').textContent = titles[page];
+      $('page-sub').textContent = subs[page];
+
+      if(page === 'profile') updateProfileStats();
+    };
+
+    // CARGAR RECETAS EN TIEMPO REAL
+    function loadRecipes() {
+  const q = query(collection(db, "recipes"), orderBy("createdAt", "desc"));
+  onSnapshot(q, (snapshot) => {
+    const feed = $('feed-list');
+    feed.innerHTML = '';
+    if (snapshot.empty) {
+      feed.innerHTML = '<div class="loading">Aún no hay recetas. ¡Sé el primero!</div>';
+      return;
+    }
+    
+    let count = 0;
+    snapshot.forEach(docSnap => {
+      count++;
+      const r = docSnap.data();
+      const tagsHtml = (r.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+      const dateStr = r.createdAt ? new Date(r.createdAt.toDate()).toLocaleDateString() : 'Reciente';
+      
+      feed.innerHTML += `
+        <div class="recipe-card">
+          <div class="recipe-header">
+            <div class="avatar">${r.name ? r.name.charAt(0) : '👤'}</div>
+            <div>
+              <div style="font-weight:600;font-size:14px;">${r.name || 'Usuario'}</div>
+              <div class="meta">@${r.user || 'anon'} · ${dateStr}</div>
+            </div>
+          </div>
+          <div class="recipe-title">${r.title}</div>
+          <div class="recipe-story">${r.story || ''}</div>
+          <div class="tags">${tagsHtml}</div>
+          <div class="actions">
+            <span class="action">❤️ ${r.likes || 0}</span>
+            <span class="action">💬 ${r.comments || 0}</span>
+            <span class="action">📌 Guardar</span>
+          </div>
+        </div>
+      `;
+      
+      // 👉 PUBLICIDAD NATIVA (aparece después de la receta #2)
+      if (count === 2) {
+        feed.innerHTML += `
+          <div class="recipe-card" style="background: #FAFAFA; border-color: #E0E0E0;">
+            <div style="font-size:10px; color:#999; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">Publicidad</div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div style="width:48px; height:48px; background:#FAE8E2; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px;">🫒</div>
+              <div>
+                <div style="font-weight:600; font-size:14px;">Aceite Oliva Verde</div>
+                <div style="font-size:12px; color:#666; margin-top:2px;">El que usan los mejores cocineros del NOA.</div>
+              </div>
+            </div>
+            <a href="https://tu-marca.com" target="_blank" style="display:block; margin-top:10px; text-align:center; background:#D85A30; color:white; padding:8px; border-radius:8px; text-decoration:none; font-size:13px; font-weight:500;">Ver producto →</a>
+          </div>
+        `;
+      }
+    });
+  });
+}
+
+    // PUBLICAR RECETA
+    window.publishRecipe = async () => {
+      if (!currentUserData) return;
+      const title = $('r-title').value.trim();
+      const story = $('r-story').value.trim();
+      const tags = $('r-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+      
+      if (!title) return alert('Escribí un título.');
+      const btn = $('btn-publish');
+      btn.disabled = true; btn.textContent = 'Publicando...';
+
+      try {
+        await addDoc(collection(db, "recipes"), {
+          title, story, tags,
+          uid: currentUserData.uid,
+          name: currentUserData.name,
+          user: currentUserData.user,
+          createdAt: new Date(),
+          likes: 0, comments: 0
+        });
+        $('r-title').value = ''; $('r-story').value = ''; $('r-tags').value = '';
+        alert('¡Receta publicada! 🎉');
+        nav('home');
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+      btn.disabled = false; btn.textContent = 'Publicar receta 🚀';
+    };
+
+    function updateProfileStats() {
+      // Conteo simple visual para v1
+      $('stat-recetas').textContent = $('feed-list').children.length > 0 ? Math.floor(Math.random() * 3 + 1) : 0;
+    }
+  </script>
+</body>
+</html>

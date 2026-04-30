@@ -1,0 +1,15 @@
+{
+  "name": "Sobre Gustos",
+  "short_name": "SobreGustos",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#F1F3F5",
+  "theme_color": "#D85A30",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2829/2829878.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
