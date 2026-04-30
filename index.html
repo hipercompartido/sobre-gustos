@@ -392,12 +392,13 @@
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- AUTH -->
-<div id="auth-overlay" class="auth-wrap">
-  <div class="auth-box">
-    <div class="auth-logo">
+<!-- MODAL AUTH (aparece solo al intentar interactuar) -->
+<div class="modal-overlay hidden" id="auth-modal" onclick="closeAuthModal(event)">
+  <div class="modal-sheet" style="max-height:90vh;">
+    <div class="modal-handle"></div>
+    <div class="auth-logo" style="margin-bottom:20px;">
       <div class="logo-text">Sobre Gustos 🍳</div>
-      <div class="logo-sub">recetas con historia · opinión incluida</div>
+      <div class="logo-sub" id="auth-modal-reason">Uníte para participar</div>
     </div>
     <div id="auth-register-fields">
       <input class="input" id="auth-name" type="text" placeholder="Nombre visible (ej: Chela)">
@@ -410,11 +411,12 @@
     <p class="auth-toggle" id="auth-toggle-text">
       ¿Ya tenés cuenta? <span onclick="toggleAuthMode()">Entrá acá</span>
     </p>
+    <button class="btn outline" onclick="closeAuthModal(null)" style="margin-top:4px;">Seguir viendo sin registrarme</button>
   </div>
 </div>
 
 <!-- APP -->
-<div id="app" class="hidden">
+<div id="app">
   <div class="phone">
     <div class="statusbar"><span>9:41</span><span>📶 🔋</span></div>
     <div class="screen" id="main-screen">
@@ -545,24 +547,62 @@
 
       <!-- PERFIL -->
       <div id="p-profile" class="page">
-        <div class="profile-header">
-          <div class="big-avatar" id="prof-avatar" style="background:#FAE8E2;">👨‍🍳</div>
-          <div style="font-size:20px;font-weight:800;" id="prof-name">Usuario</div>
-          <div style="font-size:13px;color:var(--muted);margin-top:2px;" id="prof-user">@usuario</div>
-          <div class="stats">
-            <div class="stat"><div class="stat-num" id="stat-recetas">0</div><div class="stat-lab">Recetas</div></div>
-            <div class="stat"><div class="stat-num" id="stat-likes">0</div><div class="stat-lab">Likes</div></div>
-            <div class="stat"><div class="stat-num" id="stat-comments">0</div><div class="stat-lab">Comentarios</div></div>
+        <!-- Estado visitante -->
+        <div id="profile-guest" class="hidden">
+          <div style="text-align:center;padding:40px 24px 24px;">
+            <div style="font-size:52px;margin-bottom:16px;">👨‍🍳</div>
+            <div style="font-size:20px;font-weight:800;margin-bottom:6px;">¡Uníte a Sobre Gustos!</div>
+            <div style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:24px;">
+              Publicá tus recetas, comentá, guardá las que te gustan y participá de los debates.
+            </div>
+            <button class="btn" onclick="requireAuth('Creá tu cuenta para tener tu perfil')">Crear cuenta gratis</button>
+            <button class="btn outline" onclick="authMode='login';toggleAuthMode();toggleAuthMode();requireAuth('Entrá a tu cuenta')">Ya tengo cuenta</button>
           </div>
+          <div style="padding:0 14px;">
+            <div class="section-title" style="padding-left:0;">¿Qué podés hacer?</div>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+              <div style="display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;">
+                <span style="font-size:24px;">📖</span>
+                <div><div style="font-size:14px;font-weight:600;">Ver recetas</div><div style="font-size:12px;color:var(--muted);">Ya podés hacerlo, sin cuenta</div></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;opacity:0.6;">
+                <span style="font-size:24px;">❤️</span>
+                <div><div style="font-size:14px;font-weight:600;">Dar likes y guardar</div><div style="font-size:12px;color:var(--muted);">Requiere cuenta</div></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;opacity:0.6;">
+                <span style="font-size:24px;">💬</span>
+                <div><div style="font-size:14px;font-weight:600;">Comentar y opinar</div><div style="font-size:12px;color:var(--muted);">Requiere cuenta</div></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;opacity:0.6;">
+                <span style="font-size:24px;">🚀</span>
+                <div><div style="font-size:14px;font-weight:600;">Publicar tus recetas</div><div style="font-size:12px;color:var(--muted);">Requiere cuenta</div></div>
+              </div>
+            </div>
+          </div>
+          <div style="height:24px;"></div>
         </div>
-        <div class="section-title">Mis recetas</div>
-        <div class="my-recipes-grid" id="my-recipes-grid">
-          <div class="loading-state" style="grid-column:1/-1;">Cargando...</div>
+
+        <!-- Estado logueado -->
+        <div id="profile-logged" class="hidden">
+          <div class="profile-header">
+            <div class="big-avatar" id="prof-avatar" style="background:#FAE8E2;">👨‍🍳</div>
+            <div style="font-size:20px;font-weight:800;" id="prof-name">Usuario</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:2px;" id="prof-user">@usuario</div>
+            <div class="stats">
+              <div class="stat"><div class="stat-num" id="stat-recetas">0</div><div class="stat-lab">Recetas</div></div>
+              <div class="stat"><div class="stat-num" id="stat-likes">0</div><div class="stat-lab">Likes</div></div>
+              <div class="stat"><div class="stat-num" id="stat-comments">0</div><div class="stat-lab">Comentarios</div></div>
+            </div>
+          </div>
+          <div class="section-title">Mis recetas</div>
+          <div class="my-recipes-grid" id="my-recipes-grid">
+            <div class="loading-state" style="grid-column:1/-1;">Cargando...</div>
+          </div>
+          <div style="padding:14px;">
+            <button class="btn outline" onclick="doLogout()">Cerrar sesión</button>
+          </div>
+          <div style="height:20px;"></div>
         </div>
-        <div style="padding:14px;">
-          <button class="btn outline" onclick="doLogout()">Cerrar sesión</button>
-        </div>
-        <div style="height:20px;"></div>
       </div>
 
     </div><!-- /screen -->
@@ -575,7 +615,7 @@
       <div class="tab" id="tab-community" onclick="nav('community')">
         <span class="tab-icon">💬</span>Comunidad
       </div>
-      <div class="tab" id="tab-add" onclick="nav('add')">
+      <div class="tab" id="tab-add" onclick="navAdd()">
         <span class="tab-icon">➕</span>Agregar
       </div>
       <div class="tab" id="tab-profile" onclick="nav('profile')">
@@ -656,7 +696,21 @@ function fmtDate(ts) {
   } catch { return 'Reciente'; }
 }
 
-// ─── AUTH ─────────────────────────────────────────────────────────────
+// ─── AUTH MODAL ───────────────────────────────────────────────────────
+window.requireAuth = function(reason) {
+  if (currentUser) return true;
+  $('auth-modal-reason').textContent = reason || 'Uníte para participar';
+  $('auth-modal').classList.remove('hidden');
+  return false;
+};
+
+window.closeAuthModal = function(e) {
+  if (e === null || e.target === $('auth-modal')) {
+    $('auth-modal').classList.add('hidden');
+    $('auth-msg').textContent = '';
+  }
+};
+
 window.toggleAuthMode = function() {
   authMode = authMode === 'register' ? 'login' : 'register';
   const isReg = authMode === 'register';
@@ -682,6 +736,7 @@ window.handleAuth = async function() {
     } else {
       await signInWithEmailAndPassword(auth, email, pass);
     }
+    $('auth-modal').classList.add('hidden');
   } catch (err) {
     $('auth-msg').textContent = err.code === 'auth/email-already-in-use'
       ? 'Ese email ya está registrado. ¿Querés entrar?' : err.message.replace('Firebase: ','');
@@ -691,8 +746,7 @@ window.handleAuth = async function() {
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
-    $('auth-overlay').classList.add('hidden');
-    $('app').classList.remove('hidden');
+    $('auth-modal').classList.add('hidden');
     const snap = await getDocs(query(collection(db, "profiles")));
     snap.forEach(d => { if (d.data().uid === user.uid) { currentUserData = { id: d.id, ...d.data() }; } });
     if (currentUserData) {
@@ -701,18 +755,38 @@ onAuthStateChanged(auth, async (user) => {
       $('prof-avatar').style = avatarStyle(currentUserData.name);
       $('prof-avatar').textContent = initials(currentUserData.name);
     }
-    loadRecipes();
-    loadCommunity();
+    updateProfileView();
+    renderFeed();
   } else {
     currentUser = null; currentUserData = null;
-    $('auth-overlay').classList.remove('hidden');
-    $('app').classList.add('hidden');
+    updateProfileView();
+    renderFeed();
   }
 });
 
+function updateProfileView() {
+  const guest = $('profile-guest');
+  const logged = $('profile-logged');
+  if (currentUser) {
+    guest.classList.add('hidden');
+    logged.classList.remove('hidden');
+  } else {
+    guest.classList.remove('hidden');
+    logged.classList.add('hidden');
+  }
+}
+
 window.doLogout = () => signOut(auth);
 
-// ─── NAVIGATION ───────────────────────────────────────────────────────
+// navAdd requiere login
+window.navAdd = function() {
+  if (!requireAuth('Creá una cuenta para publicar tu receta 🚀')) return;
+  nav('add');
+};
+
+// Cargar contenido público al arrancar, sin esperar auth
+loadRecipes();
+loadCommunity();
 window.nav = function(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -845,7 +919,7 @@ function buildReactions(r) {
 }
 
 window.addReaction = async function(recipeId, emoji) {
-  if (!currentUser) return showToast('Iniciá sesión para reaccionar');
+  if (!requireAuth('Registrate para reaccionar 😂')) return;
   const ref = doc(db, "recipes", recipeId);
   const snap = await getDoc(ref);
   const data = snap.data();
@@ -860,7 +934,7 @@ window.addReaction = async function(recipeId, emoji) {
 
 // ─── LIKES ────────────────────────────────────────────────────────────
 window.toggleLike = async function(id) {
-  if (!currentUser) return showToast('Iniciá sesión para dar like 💕');
+  if (!requireAuth('Registrate para dar likes ❤️')) return;
   const ref = doc(db, "recipes", id);
   const snap = await getDoc(ref);
   const liked = (snap.data().likedBy || []).includes(currentUser.uid);
@@ -872,7 +946,7 @@ window.toggleLike = async function(id) {
 
 // ─── SAVE ─────────────────────────────────────────────────────────────
 window.toggleSave = async function(id) {
-  if (!currentUser) return showToast('Iniciá sesión para guardar 📌');
+  if (!requireAuth('Registrate para guardar recetas 📌')) return;
   const ref = doc(db, "recipes", id);
   const snap = await getDoc(ref);
   const saved = (snap.data().savedBy || []).includes(currentUser.uid);
@@ -913,7 +987,7 @@ async function loadComments(recipeId) {
 }
 
 window.submitComment = async function(recipeId) {
-  if (!currentUser || !currentUserData) return showToast('Iniciá sesión para comentar');
+  if (!requireAuth('Registrate para comentar 💬')) return;
   const input = $('cinput-' + recipeId);
   const text = input.value.trim();
   if (!text) return;
@@ -1007,7 +1081,7 @@ function renumberSteps() {
 }
 
 window.publishRecipe = async function() {
-  if (!currentUserData) return;
+  if (!requireAuth('Registrate para publicar recetas 🚀')) return;
   const title = $('r-title').value.trim();
   if (!title) return showToast('Escribí un título para tu receta');
 
@@ -1086,7 +1160,7 @@ function loadCommunity() {
 }
 
 window.votePost = async function(postId, emoji) {
-  if (!currentUser) return showToast('Iniciá sesión para reaccionar');
+  if (!requireAuth('Registrate para reaccionar 👏')) return;
   const ref = doc(db, "community", postId);
   const snap = await getDoc(ref);
   const data = snap.data();
@@ -1100,7 +1174,7 @@ window.votePost = async function(postId, emoji) {
 };
 
 window.postToCommunity = async function() {
-  if (!currentUserData) return showToast('Iniciá sesión para postear');
+  if (!requireAuth('Registrate para postear en la comunidad 💬')) return;
   const input = $('community-input');
   const text = input.value.trim();
   if (!text) return showToast('Escribí algo primero 😄');
@@ -1142,7 +1216,7 @@ window.vote = function(side) {
 
 // ─── PROFILE ──────────────────────────────────────────────────────────
 function loadProfile() {
-  if (!currentUser) return;
+  if (!currentUser) { updateProfileView(); return; }
   const myRecipes = allRecipes.filter(r => r.uid === currentUser.uid);
   const totalLikes = myRecipes.reduce((a,r) => a + (r.likes||0), 0);
   const totalComments = myRecipes.reduce((a,r) => a + (r.commentCount||0), 0);
