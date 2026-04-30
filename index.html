@@ -821,6 +821,31 @@
         ? 'Ese email ya está registrado. ¿Querés entrar?' : err.message.replace('Firebase: ','');
     }
   };
+    
+  window.signInWithGoogle = async function() {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const snap = await getDocs(query(collection(db, "profiles")));
+      let found = false;
+      snap.forEach(d => { if (d.data().uid === user.uid) found = true; });
+      if (!found) {
+        const name = user.displayName || 'Chef';
+        const userHandle = (user.email || '').split('@')[0].replace(/[^a-zA-Z0-9_]/g,'');
+        await addDoc(collection(db, "profiles"), {
+          uid: user.uid, email: user.email, name,
+          user: userHandle || 'chef_' + Date.now(),
+          createdAt: new Date()
+        });
+      }
+      $('auth-modal').classList.add('hidden');
+    } catch (err) {
+      if (err.code !== 'auth/popup-closed-by-user') {
+        $('auth-msg').textContent = err.message.replace('Firebase: ','');
+      }
+    }
+  };
 
   // ═══════════════════════════════════════════════════════════════
   // BLOQUE: AUTH STATE LISTENER
