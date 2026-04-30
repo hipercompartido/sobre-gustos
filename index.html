@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#D85A30">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -83,12 +83,7 @@
       box-shadow: 0 12px 40px rgba(0,0,0,0.12);
       position: relative;
     }
-    .statusbar {
-      padding: 12px 20px 6px;
-      display: flex; justify-content: space-between;
-      font-size: 11px; color: var(--muted);
-      background: var(--card);
-    }
+    .statusbar { display: none; }
     .screen { background: var(--bg); height: 660px; overflow-y: auto; overflow-x: hidden; }
     .screen::-webkit-scrollbar { display: none; }
 
@@ -106,6 +101,9 @@
       background: var(--primary-light); display: flex; align-items: center;
       justify-content: center; font-size: 16px; cursor: pointer;
     }
+    /* Espacio reservado para que el topbar no cambie de altura entre vistas */
+    .topbar-extras { overflow: hidden; transition: max-height 0.2s ease; max-height: 80px; }
+    .topbar-extras.collapsed { max-height: 0; }
 
     /* SEARCH */
     .search-bar {
@@ -430,19 +428,21 @@
           </div>
           <div class="notif-btn" onclick="showToast('¡Notificaciones próximamente! 🔔')">🔔</div>
         </div>
-        <div class="search-bar" id="search-bar">
-          <span>🔍</span>
-          <input type="text" placeholder="Buscar receta, ingrediente..." id="search-input" oninput="filterFeed()">
-        </div>
-        <div id="chips-container" class="chips-wrap">
-          <span class="chip active" onclick="filterChip(this,'')">Todo</span>
-          <span class="chip" onclick="filterChip(this,'🍝')">🍝 Pastas</span>
-          <span class="chip" onclick="filterChip(this,'🥩')">🥩 Carnes</span>
-          <span class="chip" onclick="filterChip(this,'🫕')">🫕 Guisos</span>
-          <span class="chip" onclick="filterChip(this,'🍰')">🍰 Postres</span>
-          <span class="chip" onclick="filterChip(this,'🌮')">🌮 Rápido</span>
-          <span class="chip" onclick="filterChip(this,'🥗')">🥗 Liviano</span>
-          <span class="chip" onclick="filterChip(this,'🍞')">🍞 Panadería</span>
+        <div class="topbar-extras" id="topbar-extras">
+          <div class="search-bar" id="search-bar">
+            <span>🔍</span>
+            <input type="text" placeholder="Buscar receta, ingrediente..." id="search-input" oninput="filterFeed()">
+          </div>
+          <div id="chips-container" class="chips-wrap">
+            <span class="chip active" onclick="filterChip(this,'')">Todo</span>
+            <span class="chip" onclick="filterChip(this,'🍝')">🍝 Pastas</span>
+            <span class="chip" onclick="filterChip(this,'🥩')">🥩 Carnes</span>
+            <span class="chip" onclick="filterChip(this,'🫕')">🫕 Guisos</span>
+            <span class="chip" onclick="filterChip(this,'🍰')">🍰 Postres</span>
+            <span class="chip" onclick="filterChip(this,'🌮')">🌮 Rápido</span>
+            <span class="chip" onclick="filterChip(this,'🥗')">🥗 Liviano</span>
+            <span class="chip" onclick="filterChip(this,'🍞')">🍞 Panadería</span>
+          </div>
         </div>
       </div>
 
@@ -794,16 +794,15 @@ window.nav = function(page) {
   $('tab-' + page).classList.add('active');
 
   const cfg = {
-    home:      { title:'Sobre Gustos', sub:'recetas con historia ✶ opinión incluida', search:true, chips:true },
-    community: { title:'Lo que se cuece 💬', sub:'la comunidad habla — vos opinás', search:false, chips:false },
-    add:       { title:'Nueva receta ✍️', sub:'compartí lo que cocinás', search:false, chips:false },
-    profile:   { title:'Mi perfil', sub:'tu espacio personal', search:false, chips:false }
+    home:      { title:'Sobre Gustos', sub:'recetas con historia ✶ opinión incluida', extras:true },
+    community: { title:'Lo que se cuece 💬', sub:'la comunidad habla — vos opinás', extras:false },
+    add:       { title:'Nueva receta ✍️', sub:'compartí lo que cocinás', extras:false },
+    profile:   { title:'Mi perfil', sub:'tu espacio personal', extras:false }
   };
   const c = cfg[page] || cfg.home;
   $('page-title').textContent = c.title;
   $('page-sub').textContent = c.sub;
-  $('search-bar').style.display = c.search ? '' : 'none';
-  $('chips-container').style.display = c.chips ? '' : 'none';
+  $('topbar-extras').classList.toggle('collapsed', !c.extras);
 
   if (page === 'profile') loadProfile();
 };
