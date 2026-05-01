@@ -780,6 +780,7 @@
   const fbApp = initializeApp(firebaseConfig);
   const auth = getAuth(fbApp);
   const db = getFirestore(fbApp);
+      seedRecipes();
 
   // ═══════════════════════════════════════════════════════════════
   // BLOQUE: STATE GLOBAL
@@ -791,13 +792,174 @@
   let authMode = 'register';
   let selectedEmoji = '🍝';
   let currentVote = null;
+      let seedDone = false;
 
   const $ = id => document.getElementById(id);
 
   // ═══════════════════════════════════════════════════════════════
   // BLOQUE: UTILIDADES
   // ═══════════════════════════════════════════════════════════════
-  window.showToast = function(msg) {
+    async function seedRecipes() {
+    if (seedDone) return;
+    const snap = await getDocs(collection(db, "recipes"));
+    if (!snap.empty) { seedDone = true; return; }
+    seedDone = true;
+
+    const seeds = [
+      {
+        title: 'Torta frita de la abuela',
+        story: 'Cada sábado de invierno la abuela sacaba la tabla de madera. La clave: manteca bien fría cortada en cubitos.',
+        emoji: '🫓',
+        tags: ['panadería', 'clásico', 'invierno'],
+        cookTime: '40 min',
+        ingredients: [
+          { name: 'Harina 0000', qty: '1 kg' },
+          { name: 'Manteca', qty: '200 g' },
+          { name: 'Agua tibia', qty: '500 ml' },
+          { name: 'Sal', qty: '1 cda' },
+          { name: 'Grasa para freír', qty: 'necesaria' }
+        ],
+        steps: [
+          'Hacer una corona con la harina, poner la sal y la manteca en cubitos en el centro.',
+          'Agregar el agua tibia de a poco mientras mezclás con las manos.',
+          'Amasar unos 10 minutos hasta que la masa sea lisa y elástica.',
+          'Dejar reposar 30 minutos tapada con un paño.',
+          'Estirar con palote hasta 5mm de espesor, cortar discos.',
+          'Freír en grasa bien caliente hasta que doren de ambos lados.',
+          'Escurrir sobre papel absorbente. Comer con azúcar.'
+        ],
+        uid: 'seed', name: 'Sobre Gustos', user: 'demo',
+        createdAt: new Date(Date.now() - 86400000 * 3),
+        likes: 12, commentCount: 4, likedBy: [], savedBy: [],
+        reactions: { '🤤': 5, '👏': 3, '🔥': 4 }, reactedBy: {}
+      },
+      {
+        title: 'Tuco con carne picada',
+        story: 'El tuco de domingo. El secreto es dorar bien la carne antes de tirar el tomate.',
+        emoji: '🍝',
+        tags: ['pastas', 'clásico', 'familiar'],
+        cookTime: '1 hora',
+        ingredients: [
+          { name: 'Carne picada', qty: '500 g' },
+          { name: 'Cebolla', qty: '2 grandes' },
+          { name: 'Ajo', qty: '3 dientes' },
+          { name: 'Puré de tomate', qty: '1 lata grande' },
+          { name: 'Tomate perita', qty: '3' },
+          { name: 'Morrón rojo', qty: '1' },
+          { name: 'Aceite', qty: 'c/n' },
+          { name: 'Sal, pimienta, orégano', qty: 'a gusto' }
+        ],
+        steps: [
+          'Picar cebolla, ajo y morrón bien fino.',
+          'En una olla con aceite, dorar la carne picada sin moverla mucho.',
+          'Apartar la carne y sofreír la cebolla hasta que transparente.',
+          'Agregar ajo y morrón, cocinar 3 minutos.',
+          'Volver la carne, agregar tomates perita cortados y puré.',
+          'Condimentar. Bajar el fuego, cocinar tapado 40 minutos.'
+        ],
+        uid: 'seed', name: 'Sobre Gustos', user: 'demo',
+        createdAt: new Date(Date.now() - 86400000 * 2),
+        likes: 8, commentCount: 2, likedBy: [], savedBy: [],
+        reactions: { '🔥': 6, '👏': 2 }, reactedBy: {}
+      },
+      {
+        title: 'Empanadas salteñas',
+        story: 'El toque salteño: pimentón, comino y papa cortada en cubitos chicos. Quedan jugosas pero no se rompen.',
+        emoji: '🥟',
+        tags: ['clásico', 'norteño', 'fiesta'],
+        cookTime: '1 hora y media',
+        ingredients: [
+          { name: 'Carne cortada a cuchillo', qty: '500 g' },
+          { name: 'Cebolla', qty: '3 grandes' },
+          { name: 'Papa', qty: '2 medianas' },
+          { name: 'Pimentón dulce', qty: '2 cda' },
+          { name: 'Comino', qty: '1 cdta' },
+          { name: 'Aceite', qty: '3 cda' },
+          { name: 'Huevos duros', qty: '3' },
+          { name: 'Aceitunas', qty: '100 g' },
+          { name: 'Discos para empanadas', qty: '24' }
+        ],
+        steps: [
+          'Cocinar las papas, pelar y cortar en cubitos chicos.',
+          'Cortar la carne a cuchillo en cubitos.',
+          'Sofreír la cebolla picada fina en aceite.',
+          'Agregar la carne, pimentón y comino. Cocinar 5 minutos.',
+          'Incorporar papa, huevo duro picado y aceitunas. Dejar enfriar.',
+          'Armar con 2 cucharadas de relleno por disco.',
+          'Humedecer borde, cerrar con repulgue.',
+          'Hornear a 220° por 20 minutos o freír.'
+        ],
+        uid: 'seed', name: 'Sobre Gustos', user: 'demo',
+        createdAt: new Date(Date.now() - 86400000),
+        likes: 15, commentCount: 6, likedBy: [], savedBy: [],
+        reactions: { '🤤': 8, '👏': 4, '🔥': 3, '😂': 1 }, reactedBy: {}
+      },
+      {
+        title: 'Flan casero sin fallar',
+        story: 'Se hace con paciencia y al baño maría. Ese es el secreto.',
+        emoji: '🍮',
+        tags: ['postres', 'clásico', 'fácil'],
+        cookTime: '1 hora + enfriado',
+        ingredients: [
+          { name: 'Huevos', qty: '4' },
+          { name: 'Leche', qty: '1 litro' },
+          { name: 'Azúcar', qty: '200 g' },
+          { name: 'Esencia de vainilla', qty: '1 cdta' },
+          { name: 'Azúcar para caramelo', qty: '100 g' }
+        ],
+        steps: [
+          'Hacer caramelo con el azúcar en flanera a fuego bajo.',
+          'Mezclar huevos con azúcar sin batir mucho.',
+          'Calentar leche con vainilla. No hervir.',
+          'Incorporar leche caliente a la mezcla de a poco.',
+          'Colar y verter sobre el caramelo.',
+          'Cocinar al baño maría a 180° por 45 minutos.',
+          'Desmoldar frío. Heladera mínimo 4 horas.'
+        ],
+        uid: 'seed', name: 'Sobre Gustos', user: 'demo',
+        createdAt: new Date(Date.now() - 86400000 * 5),
+        likes: 20, commentCount: 8, likedBy: [], savedBy: [],
+        reactions: { '🤤': 10, '👏': 6, '🔥': 2, '😂': 2 }, reactedBy: {}
+      },
+      {
+        title: 'Choripán con chimichurri',
+        story: 'No hay asado sin choripán. Y no hay choripán sin chimichurri casero. Lo de frasco no cuenta.',
+        emoji: '🌭',
+        tags: ['rápido', 'clásico', 'asado'],
+        cookTime: '30 min',
+        ingredients: [
+          { name: 'Choripanes', qty: '4' },
+          { name: 'Perejil fresco', qty: '1 atado' },
+          { name: 'Ajo', qty: '4 dientes' },
+          { name: 'Ají molido', qty: '1 cda' },
+          { name: 'Orégano seco', qty: '1 cda' },
+          { name: 'Vinagre', qty: '3 cda' },
+          { name: 'Aceite', qty: '6 cda' },
+          { name: 'Sal', qty: 'a gusto' },
+          { name: 'Pan francés', qty: '4' }
+        ],
+        steps: [
+          'Picar fino el perejil y el ajo.',
+          'Mezclar perejil, ajo, ají, orégano, sal, vinagre y aceite.',
+          'Dejar reposar el chimichurri 30 minutos.',
+          'Cocinar choripanes a fuego medio, pinchar un par de veces.',
+          'Cortar pan por arriba, poner chorizo.',
+          'Bañar con chimichurri generoso.',
+          'Comer parado al lado de la parrilla.'
+        ],
+        uid: 'seed', name: 'Sobre Gustos', user: 'demo',
+        createdAt: new Date(Date.now() - 86400000 * 7),
+        likes: 25, commentCount: 10, likedBy: [], savedBy: [],
+        reactions: { '🔥': 15, '🤤': 6, '👏': 3, '😂': 1 }, reactedBy: {}
+      }
+    ];
+
+    for (const r of seeds) {
+      await addDoc(collection(db, "recipes"), r);
+    }
+    showToast('¡Recetas de ejemplo cargadas! 🎉');
+  }
+    window.showToast = function(msg) {
     const t = $('toast');
     t.textContent = msg;
     t.classList.add('show');
