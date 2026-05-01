@@ -1171,7 +1171,7 @@
         const user = $('auth-user').value.trim().replace(/[^a-zA-Z0-9_]/g,'');
         if (!name || !user) { $('auth-msg').textContent = 'Completá nombre y @usuario.'; return; }
         const cred = await createUserWithEmailAndPassword(auth, email, pass);
-        await addDoc(collection(db,        await addDoc(collection(db, "profiles"), { uid: cred.user.uid, email, name, user, level: 'foodie', bio: '', createdAt: new Date() }); "profiles"), { uid: cred.user.uid, email, name, user, createdAt: new Date() });
+        await addDoc(collection(db, "profiles"), { uid: cred.user.uid, email, name, user, level: 'foodie', bio: '', createdAt: new Date() });
       } else {
         await signInWithEmailAndPassword(auth, email, pass);
       }
@@ -1181,7 +1181,6 @@
         ? 'Ese email ya está registrado. ¿Querés entrar?' : err.message.replace('Firebase: ','');
     }
   };
-    
   window.signInWithGoogle = async function() {
     try {
       const provider = new GoogleAuthProvider();
