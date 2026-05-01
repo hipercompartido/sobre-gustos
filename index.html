@@ -1890,7 +1890,7 @@
     renderPhotoThumbs();
   };
 
-   // SUB-BLOQUE: Publicar receta
+     // SUB-BLOQUE: Publicar receta
   window.publishRecipe = async function() {
     if (!requireAuth('Registrate para publicar recetas 🚀')) return;
     const title = $('r-title').value.trim();
@@ -1921,43 +1921,21 @@
       let photoUrls = [];
 
       if (pendingPhotos.length > 0) {
-        btn.textContent = 'Subiendo fotos...';
+        btn.textContent = 'Procesando fotos...';
 
-        // Intentar Storage primero
-        let storageOk = true;
-        try {
-          for (let i = 0; i < pendingPhotos.length; i++) {
-            const dataUrl = pendingPhotos[i];
-            const response = await fetch(dataUrl);
-            const blob = await response.blob();
-            const path = `recipes/${currentUser.uid}/${Date.now()}_${i}.jpg`;
-            const storageRef = sRef(storage, path);
-            await uploadBytes(storageRef, blob);
-            const url = await getDownloadURL(storageRef);
-            photoUrls.push(url);
-          }
-        } catch (storageErr) {
-          console.warn('Storage falló (CORS?), usando base64:', storageErr.message);
-          storageOk = false;
+        for (let i = 0; i < pendingPhotos.length; i++) {
+          const compressed = await compressImagePromise(pendingPhotos[i], 500, 0.45);
+          photoUrls.push(compressed);
         }
 
-        // Fallback: base64 con compresión agresiva
-        if (!storageOk || photoUrls.length === 0) {
-          btn.textContent = 'Procesando fotos...';
-          photoUrls = [];
-          for (let i = 0; i < pendingPhotos.length; i++) {
-            const compressed = await compressImagePromise(pendingPhotos[i], 500, 0.45);
-            photoUrls.push(compressed);
-          }
-          // Verificar que no pasemos 800KB de fotos en total
-          const totalSize = photoUrls.reduce((acc, url) => {
-            const base64 = url.split(',')[1] || '';
-            return acc + (base64.length * 0.75);
-          }, 0);
-          if (totalSize > 800000) {
-            photoUrls = [photoUrls[0]];
-            showToast('Solo se guardó 1 foto por tamaño');
-          }
+        // Verificar que no pasemos 800KB de fotos en total
+        const totalSize = photoUrls.reduce((acc, url) => {
+          const base64 = url.split(',')[1] || '';
+          return acc + (base64.length * 0.75);
+        }, 0);
+        if (totalSize > 800000) {
+          photoUrls = [photoUrls[0]];
+          showToast('Solo se guardó 1 foto por tamaño');
         }
       }
 
