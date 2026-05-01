@@ -386,7 +386,32 @@
     }
     .mini-banner { height: 64px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
     .mini-title { padding: 8px 10px 10px; font-size: 13px; font-weight: 600; color: var(--text); }
-
+    .level-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 20px; font-size: 11px;
+      font-weight: 600; background: var(--primary-light); color: var(--primary);
+      border: 1px solid #F5D5C8;
+    }
+    .profile-bio { font-size: 13px; color: #555; line-height: 1.5; text-align: center; margin-top: 8px; max-width: 260px; margin-left: auto; margin-right: auto; }
+    .edit-profile-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 7px 14px; border-radius: 10px; font-size: 12px;
+      font-weight: 500; cursor: pointer; border: 1px solid var(--border);
+      background: var(--card); color: var(--muted); font-family: inherit;
+      margin-top: 10px; transition: all 0.15s;
+    }
+    .edit-profile-btn:hover { background: var(--bg); color: var(--text); }
+    .level-opt {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border: 1px solid var(--border);
+      border-radius: 12px; cursor: pointer; transition: all 0.15s;
+      background: var(--card);
+    }
+    .level-opt:hover { background: var(--bg); }
+    .level-opt.selected { border-color: var(--primary); background: var(--primary-light); }
+    .level-opt-emoji { font-size: 24px; flex-shrink: 0; }
+    .level-opt-label { font-size: 14px; font-weight: 600; color: var(--text); }
+    .level-opt-desc { font-size: 11px; color: var(--muted); margin-top: 1px; }
   /* ═══════════════════════════════════════════════════════════════
      BLOQUE: TABS INFERIORES - ESTILOS
      ═══════════════════════════════════════════════════════════════ */
@@ -671,8 +696,11 @@
           <div id="profile-logged" class="hidden">
             <div class="profile-header">
               <div class="big-avatar" id="prof-avatar" style="background:#FAE8E2;">👨‍🍳</div>
-              <div style="font-size:20px;font-weight:800;" id="prof-name">Usuario</div>
+                            <div style="font-size:20px;font-weight:800;" id="prof-name">Usuario</div>
+              <div id="prof-level-badge" class="level-badge" style="margin-top:6px;display:none;"></div>
               <div style="font-size:13px;color:var(--muted);margin-top:2px;" id="prof-user">@usuario</div>
+              <div class="profile-bio" id="prof-bio"></div>
+              <button class="edit-profile-btn" onclick="openEditProfile()">✏️ Editar perfil</button>
               <div class="stats">
                 <div class="stat"><div class="stat-num" id="stat-recetas">0</div><div class="stat-lab">Recetas</div></div>
                 <div class="stat"><div class="stat-num" id="stat-likes">0</div><div class="stat-lab">Likes</div></div>
@@ -752,6 +780,51 @@
         <p>Si algo cambia acá, lo avisamos en la app. Fecha de última actualización: julio 2025.</p>
       </div>
       <button class="btn" onclick="closePrivacy(null)" style="margin-top:16px;">Cerrar</button>
+    </div>
+  </div>
+    <!-- ═══════════════════════════════════════════════════════════════
+       BLOQUE: MODAL EDITAR PERFIL (HTML)
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay hidden" id="edit-profile-modal" onclick="closeEditProfile(event)">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div style="font-size:18px;font-weight:800;margin-bottom:16px;">Editar perfil</div>
+
+      <div class="form-group">
+        <label class="form-label">Nombre visible</label>
+        <input class="input" id="edit-name" placeholder="Tu nombre">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Bio (opcional)</label>
+              <textarea class="input" id="edit-bio" rows="2" placeholder="Un poco sobre vos, qué cocinás, de dónde sos..." maxlength="120" oninput="document.getElementById('bio-count').textContent=this.value.length"></textarea>
+        <div style="font-size:11px;color:var(--muted);text-align:right;margin-top:3px;"><span id="bio-count">0</span>/120</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Tu nivel</label>
+        <div style="display:flex;flex-direction:column;gap:8px;" id="level-picker">
+          <div class="level-opt" onclick="pickLevel(this,'foodie')">
+            <div class="level-opt-emoji">🍽️</div>
+            <div><div class="level-opt-label">Foodie</div><div class="level-opt-desc">Pruebo y opino</div></div>
+          </div>
+          <div class="level-opt" onclick="pickLevel(this,'casero')">
+            <div class="level-opt-emoji">👨‍🍳</div>
+            <div><div class="level-opt-label">Casero/a</div><div class="level-opt-desc">Cocino en casa</div></div>
+          </div>
+          <div class="level-opt" onclick="pickLevel(this,'cocinero')">
+            <div class="level-opt-emoji">🧑‍🍳</div>
+            <div><div class="level-opt-label">Cocinero/a</div><div class="level-opt-desc">Tengo experiencia</div></div>
+          </div>
+          <div class="level-opt" onclick="pickLevel(this,'chef')">
+            <div class="level-opt-emoji">👨‍🍳</div>
+            <div><div class="level-opt-label">Chef</div><div class="level-opt-desc">Soy profesional</div></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn" onclick="saveProfile()">Guardar cambios</button>
+      <button class="btn outline" onclick="closeEditProfile(null)" style="margin-top:4px;">Cancelar</button>
     </div>
   </div>
   <script type="module">
@@ -959,6 +1032,55 @@
     }
     showToast('¡Recetas de ejemplo cargadas! 🎉');
   }
+      const LEVELS = { foodie: { emoji: '🍽️', label: 'Foodie' }, casero: { emoji: '👨‍🍳', label: 'Casero/a' }, cocinero: { emoji: '🧑‍🍳', label: 'Cocinero/a' }, chef: { emoji: '👨‍🍳', label: 'Chef' } };
+
+  let editLevel = 'foodie';
+
+  window.pickLevel = function(el, level) {
+    document.querySelectorAll('.level-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    editLevel = level;
+  };
+
+  window.openEditProfile = function() {
+    if (!currentUserData) return;
+    $('edit-name').value = currentUserData.name || '';
+    $('edit-bio').value = currentUserData.bio || '';
+    $('bio-count').textContent = (currentUserData.bio || '').length;
+    editLevel = currentUserData.level || 'foodie';
+    document.querySelectorAll('.level-opt').forEach(o => o.classList.remove('selected'));
+    const target = document.querySelector(`.level-opt[onclick*="'${editLevel}'"]`);
+    if (target) target.classList.add('selected');
+    $('edit-profile-modal').classList.remove('hidden');
+  };
+
+  window.closeEditProfile = function(e) {
+    if (e === null || e.target === $('edit-profile-modal')) {
+      $('edit-profile-modal').classList.add('hidden');
+    }
+  };
+
+  window.saveProfile = async function() {
+    const name = $('edit-name').value.trim();
+    const bio = $('edit-bio').value.trim();
+    if (!name) return showToast('Escribí un nombre');
+    try {
+      await updateDoc(doc(db, "profiles", currentUserData.id), { name, bio, level: editLevel });
+      currentUserData.name = name;
+      currentUserData.bio = bio;
+      currentUserData.level = editLevel;
+      $('prof-name').textContent = name;
+      const lvl = LEVELS[editLevel];
+      const badge = $('prof-level-badge');
+      badge.style.display = 'inline-flex';
+      badge.textContent = lvl.emoji + ' ' + lvl.label;
+      $('prof-bio').textContent = bio;
+      $('prof-avatar').textContent = initials(name);
+      $('prof-avatar').style = avatarStyle(name);
+      $('edit-profile-modal').classList.add('hidden');
+      showToast('¡Perfil actualizado! ✅');
+    } catch (err) { showToast('Error al guardar'); }
+  };
     window.showToast = function(msg) {
     const t = $('toast');
     t.textContent = msg;
@@ -1049,7 +1171,7 @@
         const user = $('auth-user').value.trim().replace(/[^a-zA-Z0-9_]/g,'');
         if (!name || !user) { $('auth-msg').textContent = 'Completá nombre y @usuario.'; return; }
         const cred = await createUserWithEmailAndPassword(auth, email, pass);
-        await addDoc(collection(db, "profiles"), { uid: cred.user.uid, email, name, user, createdAt: new Date() });
+        await addDoc(collection(db,        await addDoc(collection(db, "profiles"), { uid: cred.user.uid, email, name, user, level: 'foodie', bio: '', createdAt: new Date() }); "profiles"), { uid: cred.user.uid, email, name, user, createdAt: new Date() });
       } else {
         await signInWithEmailAndPassword(auth, email, pass);
       }
