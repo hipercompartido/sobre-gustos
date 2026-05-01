@@ -1004,10 +1004,10 @@
 
   window.filterFeed = function() { renderFeed(); };
 
-  function matchesFilter(r) {
+   function matchesFilter(r) {
     const q = $('search-input')?.value?.toLowerCase() || '';
     const matchQ = !q || r.title?.toLowerCase().includes(q) || r.story?.toLowerCase().includes(q) || (r.tags||[]).join(' ').toLowerCase().includes(q);
-    const matchChip = !activeChipFilter || r.emoji === activeChipFilter || (r.tags||[]).join(' ').includes(activeChipFilter);
+    const matchChip = !activeChipFilter || r.emoji === activeChipFilter;
     return matchQ && matchChip;
   }
 
