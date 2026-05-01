@@ -1106,7 +1106,9 @@
     if (currentUser && uid === currentUser.uid) { closeUserProfile(null); nav('profile'); return; }
     showToast('paso 2');
 
+    showToast('buscando perfil...');
     const profSnap = await getDocs(query(collection(db, "profiles"), where("uid", "==", uid)));
+    showToast('encontré: ' + profSnap.size);
     let profile = null;
     profSnap.forEach(d => { if (d.data().uid === uid) profile = { id: d.id, ...d.data() }; });
     if (!profile) { showToast('Usuario no encontrado'); return; }
