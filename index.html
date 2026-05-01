@@ -1162,7 +1162,9 @@
       ${recipesHtml}
       <button class="btn outline" onclick="closeUserProfile(null)" style="margin-top:12px;">Cerrar</button>`;
 
+    showToast('abriendo modal...');
     $('user-profile-modal').classList.remove('hidden');
+    showToast('modal abierto');
   };
 
   window.closeUserProfile = function(e) {
