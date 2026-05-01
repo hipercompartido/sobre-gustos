@@ -6,7 +6,7 @@
        BLOQUE: META HEAD
        Charset, viewport, PWA manifest, theme-color, título
        ═══════════════════════════════════════════════════════════════ -->
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#D85A30">
@@ -72,8 +72,18 @@
       box-shadow: 0 2px 16px rgba(0,0,0,0.08);
     }
     .auth-logo { text-align: center; margin-bottom: 24px; }
-    .auth-logo .logo-text { font-size: 26px; font-weight: 700; color: var(--primary); letter-spacing: -1px; }
-    .auth-logo .logo-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+    /* SUB-BLOQUE: AUTH LOGO ANIMADO */
+    .logo-animated { text-align: center; }
+    .logo-animated h1 {
+      font-size: 26px; font-weight: 700;
+      color: var(--primary); letter-spacing: -1px;
+    }
+    .logo-animated .tagline {
+      font-size: 12px; color: var(--muted); margin-top: 3px;
+    }
+
+    /* SUB-BLOQUE: AUTH INPUTS Y BOTONES */
     .input {
       width: 100%; padding: 13px 14px; margin-bottom: 10px;
       border: 1px solid var(--border); border-radius: 12px;
@@ -90,12 +100,15 @@
       font-family: inherit; transition: 0.15s; margin-top: 4px;
     }
     .btn:active { transform: scale(0.98); opacity: 0.92; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
     .btn.outline {
       background: transparent; color: var(--muted);
       border: 1px solid var(--border); margin-top: 8px;
     }
     .btn.danger { background: #c0392b; }
     .btn.small { padding: 9px 14px; font-size: 13px; width: auto; }
+
+    /* SUB-BLOQUE: AUTH TOGGLE Y MENSAJES */
     .auth-toggle { text-align: center; font-size: 13px; color: var(--muted); margin-top: 14px; }
     .auth-toggle span { color: var(--primary); cursor: pointer; font-weight: 500; }
     .msg { text-align: center; font-size: 13px; color: var(--muted); margin-top: 10px; min-height: 18px; }
@@ -186,11 +199,6 @@
     }
     .recipe-body { padding: 12px 14px 14px; }
     .recipe-user-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-    .av {
-      width: 30px; height: 30px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 700; flex-shrink: 0;
-    }
     .recipe-author { font-size: 13px; font-weight: 600; color: var(--text); }
     .recipe-date { font-size: 11px; color: var(--muted); }
     .recipe-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
@@ -242,7 +250,7 @@
       width: 34px; height: 34px; border-radius: 50%;
       background: var(--primary); border: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      font-size: 15px; flex-shrink: 0;
+      font-size: 15px; flex-shrink: 0; color: white;
     }
 
   /* ═══════════════════════════════════════════════════════════════
@@ -259,6 +267,52 @@
       display: flex; align-items: center; gap: 3px;
     }
     .react-pill.active { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+
+  /* ═══════════════════════════════════════════════════════════════
+     BLOQUE: FOTOS - ESTILOS
+     Usado en: formulario agregar, detalle receta, feed
+     ═══════════════════════════════════════════════════════════════ */
+
+    /* SUB-BLOQUE: Upload de fotos (formulario) */
+    .photo-upload-area {
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .photo-add-btn {
+      width: 72px; height: 72px; border-radius: 12px;
+      border: 2px dashed var(--border); background: var(--bg);
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; cursor: pointer; font-size: 11px;
+      color: var(--muted); gap: 3px; transition: all 0.15s;
+    }
+    .photo-add-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .photo-add-btn span { font-size: 20px; }
+    .photo-thumb {
+      width: 72px; height: 72px; border-radius: 12px;
+      overflow: hidden; position: relative;
+    }
+    .photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-thumb .photo-del {
+      position: absolute; top: 3px; right: 3px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: rgba(0,0,0,0.6); color: white; border: none;
+      cursor: pointer; font-size: 12px; display: flex;
+      align-items: center; justify-content: center;
+    }
+
+    /* SUB-BLOQUE: Fotos en feed (carousel chico) */
+    .recipe-photos {
+      display: flex; gap: 4px; padding: 0 14px 8px;
+      overflow-x: auto;
+    }
+    .recipe-photos::-webkit-scrollbar { display: none; }
+    .recipe-photos img {
+      height: 80px; border-radius: 8px; flex-shrink: 0; object-fit: cover;
+    }
+
+    /* SUB-BLOQUE: Foto en detalle (grande) */
+    .detail-photo {
+      width: 100%; border-radius: 12px; margin-bottom: 10px; object-fit: cover;
+    }
 
   /* ═══════════════════════════════════════════════════════════════
      BLOQUE: COMMUNITY POST - ESTILOS
@@ -332,6 +386,8 @@
     .form-section { padding: 14px; }
     .form-label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px; display: block; }
     .form-group { margin-bottom: 14px; }
+
+    /* SUB-BLOQUE: Emoji picker */
     .emoji-picker { display: flex; gap: 8px; flex-wrap: wrap; }
     .emoji-opt {
       width: 42px; height: 42px; border-radius: 12px; border: 1px solid var(--border);
@@ -339,6 +395,8 @@
       font-size: 22px; cursor: pointer; transition: all 0.15s;
     }
     .emoji-opt.selected { border-color: var(--primary); background: var(--primary-light); }
+
+    /* SUB-BLOQUE: Lista de ingredientes */
     .ingr-list { display: flex; flex-direction: column; gap: 7px; }
     .ingr-row { display: flex; gap: 7px; align-items: center; }
     .ingr-row input { flex: 1; }
@@ -352,6 +410,8 @@
       font-size: 13px; color: var(--primary); cursor: pointer;
       padding: 8px 0; font-weight: 500; background: none; border: none; font-family: inherit;
     }
+
+    /* SUB-BLOQUE: Lista de pasos */
     .step-list { display: flex; flex-direction: column; gap: 8px; }
     .step-row { display: flex; gap: 8px; align-items: flex-start; }
     .step-num {
@@ -361,44 +421,9 @@
       font-size: 12px; font-weight: 700; margin-top: 10px;
     }
     .step-row textarea { flex: 1; min-height: 56px; resize: none; }
-        .photo-upload-area {
-      display: flex; gap: 8px; flex-wrap: wrap;
-    }
-    .photo-add-btn {
-      width: 72px; height: 72px; border-radius: 12px;
-      border: 2px dashed var(--border); background: var(--bg);
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; cursor: pointer; font-size: 11px;
-      color: var(--muted); gap: 3px; transition: all 0.15s;
-    }
-    .photo-add-btn:hover { border-color: var(--primary); color: var(--primary); }
-    .photo-add-btn span { font-size: 20px; }
-    .photo-thumb {
-      width: 72px; height: 72px; border-radius: 12px;
-      overflow: hidden; position: relative;
-    }
-    .photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .photo-thumb .photo-del {
-      position: absolute; top: 3px; right: 3px;
-      width: 20px; height: 20px; border-radius: 50%;
-      background: rgba(0,0,0,0.6); color: white; border: none;
-      cursor: pointer; font-size: 12px; display: flex;
-      align-items: center; justify-content: center;
-    }
-    .recipe-photos {
-      display: flex; gap: 4px; padding: 0 14px 8px;
-      overflow-x: auto;
-    }
-    .recipe-photos::-webkit-scrollbar { display: none; }
-    .recipe-photos img {
-      height: 80px; border-radius: 8px; flex-shrink: 0; object-fit: cover;
-    }
-    .detail-photo {
-      width: 100%; border-radius: 12px; margin-bottom: 10px; object-fit: cover;
-    }
 
   /* ═══════════════════════════════════════════════════════════════
-     BLOQUE: PERFIL - ESTILOS
+     BLOQUE: PERFIL PROPIO - ESTILOS
      ═══════════════════════════════════════════════════════════════ */
     .profile-header {
       text-align: center; padding: 24px 16px 16px;
@@ -421,20 +446,6 @@
     }
     .mini-banner { height: 64px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
     .mini-title { padding: 8px 10px 10px; font-size: 13px; font-weight: 600; color: var(--text); }
-        .follow-btn {
-      padding: 8px 24px; border-radius: 20px; font-size: 13px;
-      font-weight: 600; cursor: pointer; border: none; font-family: inherit;
-      transition: all 0.15s; margin-top: 10px;
-    }
-    .follow-btn.not-following { background: var(--primary); color: white; }
-    .follow-btn.not-following:hover { opacity: 0.9; }
-    .follow-btn.following { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
-    .level-badge {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 3px 10px; border-radius: 20px; font-size: 11px;
-      font-weight: 600; background: var(--primary-light); color: var(--primary);
-      border: 1px solid #F5D5C8;
-    }
     .profile-bio { font-size: 13px; color: #555; line-height: 1.5; text-align: center; margin-top: 8px; max-width: 260px; margin-left: auto; margin-right: auto; }
     .edit-profile-btn {
       display: inline-flex; align-items: center; gap: 4px;
@@ -444,6 +455,30 @@
       margin-top: 10px; transition: all 0.15s;
     }
     .edit-profile-btn:hover { background: var(--bg); color: var(--text); }
+
+  /* ═══════════════════════════════════════════════════════════════
+     BLOQUE: PERFIL AJENO - ESTILOS
+     ═══════════════════════════════════════════════════════════════ */
+    .follow-btn {
+      padding: 8px 24px; border-radius: 20px; font-size: 13px;
+      font-weight: 600; cursor: pointer; border: none; font-family: inherit;
+      transition: all 0.15s; margin-top: 10px;
+    }
+    .follow-btn.not-following { background: var(--primary); color: white; }
+    .follow-btn.not-following:hover { opacity: 0.9; }
+    .follow-btn.following { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+
+  /* SUB-BLOQUE: Level badge (se usa en ambos perfiles) */
+    .level-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 20px; font-size: 11px;
+      font-weight: 600; background: var(--primary-light); color: var(--primary);
+      border: 1px solid #F5D5C8;
+    }
+
+  /* ═══════════════════════════════════════════════════════════════
+     BLOQUE: LEVEL PICKER - ESTILOS
+     ═══════════════════════════════════════════════════════════════ */
     .level-opt {
       display: flex; align-items: center; gap: 10px;
       padding: 10px 12px; border: 1px solid var(--border);
@@ -455,6 +490,7 @@
     .level-opt-emoji { font-size: 24px; flex-shrink: 0; }
     .level-opt-label { font-size: 14px; font-weight: 600; color: var(--text); }
     .level-opt-desc { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
   /* ═══════════════════════════════════════════════════════════════
      BLOQUE: TABS INFERIORES - ESTILOS
      ═══════════════════════════════════════════════════════════════ */
@@ -514,7 +550,9 @@
       width: 36px; height: 4px; border-radius: 2px;
       background: var(--border); margin: 0 auto 16px;
     }
-        .privacy-body { font-size: 14px; color: var(--text); line-height: 1.65; }
+
+    /* SUB-BLOQUE: Modal privacidad */
+    .privacy-body { font-size: 14px; color: var(--text); line-height: 1.65; }
     .privacy-body h2 { font-size: 16px; font-weight: 700; color: var(--text); margin: 16px 0 6px; }
     .privacy-body h2:first-child { margin-top: 0; }
     .privacy-body p { color: #555; margin-bottom: 10px; }
@@ -534,22 +572,21 @@
   <div class="modal-overlay hidden" id="auth-modal" onclick="closeAuthModal(event)">
     <div class="modal-sheet" style="max-height:90vh;">
       <div class="modal-handle"></div>
-      <div class="auth-logo" style="margin-bottom:20px;">
-        <div class="logo-animated">
-          <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
-            <!-- ... todo el SVG ... -->
-          </svg>
-          <div class="logo-text">
-            <h1>Sobre Gustos</h1>
-            <p class="tagline">no había nada escrito... hasta hoy! 🤔</p>
-          </div>
-        </div>
-        <div class="logo-sub" id="auth-modal-reason">Uníte para participar</div>
+
+      <!-- SUB-BLOQUE: Logo del modal -->
+      <div class="logo-animated" style="margin-bottom:20px;">
+        <h1>Sobre Gustos</h1>
+        <p class="tagline">no había nada escrito... hasta hoy! 🤔</p>
       </div>
+      <div class="logo-sub" id="auth-modal-reason" style="text-align:center;font-size:12px;color:var(--muted);margin-bottom:16px;">Uníte para participar</div>
+
+      <!-- SUB-BLOQUE: Campos de registro -->
       <div id="auth-register-fields">
         <input class="input" id="auth-name" type="text" placeholder="Nombre visible (ej: Chela)">
         <input class="input" id="auth-user" type="text" placeholder="@usuario (sin espacios)">
       </div>
+
+      <!-- SUB-BLOQUE: Campos comunes (login y register) -->
       <input class="input" id="auth-email" type="email" placeholder="Email">
       <input class="input" id="auth-pass" type="password" placeholder="Contraseña (mín 6 caracteres)">
       <button class="btn" id="auth-submit-btn" onclick="handleAuth()">Crear cuenta</button>
@@ -557,8 +594,9 @@
       <p class="auth-toggle" id="auth-toggle-text">
         ¿Ya tenés cuenta? <span onclick="toggleAuthMode()">Entrá acá</span>
       </p>
-           <button class="btn outline" onclick="closeAuthModal(null)" style="margin-top:4px;">Seguir viendo sin registrarme</button>
+      <button class="btn outline" onclick="closeAuthModal(null)" style="margin-top:4px;">Seguir viendo sin registrarme</button>
 
+      <!-- SUB-BLOQUE: Login social -->
       <div style="display:flex;align-items:center;gap:8px;margin:12px 0;color:var(--muted);font-size:12px;">
         <div style="flex:1;height:1px;background:var(--border);"></div>
         o entrá con
@@ -586,7 +624,7 @@
               <h1 id="page-title">Sobre Gustos</h1>
               <p id="page-sub">recetas con historia ✶ opinión incluida</p>
             </div>
-                        <div class="notif-btn" onclick="shareApp()">📤</div>
+            <div class="notif-btn" onclick="shareApp()">📤</div>
           </div>
           <div class="topbar-extras" id="topbar-extras">
             <div class="search-bar" id="search-bar">
@@ -614,6 +652,8 @@
         <!-- SUB-BLOQUE: PÁGINA COMUNIDAD (HTML) -->
         <div id="p-community" class="page">
           <div id="community-list">
+
+            <!-- SUB-SUB-BLOQUE: Debate del día -->
             <div class="debate-banner">
               <div class="debate-icon">🔥</div>
               <div style="flex:1">
@@ -630,10 +670,14 @@
                 <div id="vote-result" style="font-size:12px;color:var(--muted);margin-top:5px;display:none;"></div>
               </div>
             </div>
-            <div class="community-post" id="community-posts-list">
+
+            <!-- SUB-SUB-BLOQUE: Posts de comunidad -->
+            <div id="community-posts-list">
               <div class="loading-state">Cargando comunidad...</div>
             </div>
           </div>
+
+          <!-- SUB-SUB-BLOQUE: Input para postear -->
           <div style="padding:14px;">
             <textarea class="input" id="community-input" rows="2" placeholder="¿Qué estás cocinando? ¿Algún tip, chiste, experiencia?"></textarea>
             <button class="btn" onclick="postToCommunity()" style="margin-top:4px;">Compartir con la comunidad 💬</button>
@@ -643,6 +687,8 @@
         <!-- SUB-BLOQUE: PÁGINA AGREGAR RECETA (HTML) -->
         <div id="p-add" class="page">
           <div class="form-section">
+
+            <!-- SUB-SUB-BLOQUE: Título y emoji -->
             <div class="form-group">
               <label class="form-label">Nombre del plato</label>
               <input class="input" id="r-title" placeholder="Ej: Tuco de la nona Ester">
@@ -662,8 +708,9 @@
                 <span class="emoji-opt" onclick="selectEmoji(this,'🥘')">🥘</span>
               </div>
             </div>
+
+            <!-- SUB-SUB-BLOQUE: Fotos -->
             <div class="form-group">
-                          <div class="form-group">
               <label class="form-label">Fotos (máx 4, opcional)</label>
               <div class="photo-upload-area" id="photo-upload-area">
                 <div class="photo-add-btn" onclick="document.getElementById('photo-input').click()">
@@ -673,9 +720,14 @@
               </div>
               <input type="file" id="photo-input" accept="image/*" multiple style="display:none" onchange="handlePhotos(this.files)">
             </div>
+
+            <!-- SUB-SUB-BLOQUE: Historia -->
+            <div class="form-group">
               <label class="form-label">La historia detrás 📖</label>
               <textarea class="input" id="r-story" rows="3" placeholder="Opcional pero recomendado: contá de dónde viene esta receta, quién te la enseñó, qué recuerdo tiene..."></textarea>
             </div>
+
+            <!-- SUB-SUB-BLOQUE: Ingredientes -->
             <div class="form-group">
               <label class="form-label">Ingredientes</label>
               <div class="ingr-list" id="ingr-list">
@@ -687,6 +739,8 @@
               </div>
               <button class="add-ingr-btn" onclick="addIngr()">+ Agregar ingrediente</button>
             </div>
+
+            <!-- SUB-SUB-BLOQUE: Pasos -->
             <div class="form-group">
               <label class="form-label">Pasos de preparación</label>
               <div class="step-list" id="step-list">
@@ -698,6 +752,8 @@
               </div>
               <button class="add-ingr-btn" onclick="addStep()">+ Agregar paso</button>
             </div>
+
+            <!-- SUB-SUB-BLOQUE: Metadatos (tags y tiempo) -->
             <div class="form-group">
               <label class="form-label">Etiquetas (separadas por coma)</label>
               <input class="input" id="r-tags" placeholder="Ej: vegetariana, sin gluten, rápido">
@@ -706,6 +762,7 @@
               <label class="form-label">Tiempo de preparación</label>
               <input class="input" id="r-time" placeholder="Ej: 45 min">
             </div>
+
             <button class="btn" id="btn-publish" onclick="publishRecipe()">Publicar receta 🚀</button>
             <div style="height:20px;"></div>
           </div>
@@ -713,6 +770,8 @@
 
         <!-- SUB-BLOQUE: PÁGINA PERFIL (HTML) -->
         <div id="p-profile" class="page">
+
+          <!-- SUB-SUB-BLOQUE: Perfil sin cuenta -->
           <div id="profile-guest" class="hidden">
             <div style="text-align:center;padding:40px 24px 24px;">
               <div style="font-size:52px;margin-bottom:16px;">👨‍🍳</div>
@@ -746,10 +805,12 @@
             </div>
             <div style="height:24px;"></div>
           </div>
+
+          <!-- SUB-SUB-BLOQUE: Perfil con cuenta -->
           <div id="profile-logged" class="hidden">
             <div class="profile-header">
               <div class="big-avatar" id="prof-avatar" style="background:#FAE8E2;">👨‍🍳</div>
-                            <div style="font-size:20px;font-weight:800;" id="prof-name">Usuario</div>
+              <div style="font-size:20px;font-weight:800;" id="prof-name">Usuario</div>
               <div id="prof-level-badge" class="level-badge" style="margin-top:6px;display:none;"></div>
               <div style="font-size:13px;color:var(--muted);margin-top:2px;" id="prof-user">@usuario</div>
               <div class="profile-bio" id="prof-bio"></div>
@@ -760,11 +821,15 @@
                 <div class="stat"><div class="stat-num" id="stat-comments">0</div><div class="stat-lab">Comentarios</div></div>
               </div>
             </div>
+
+            <!-- SUB-SUB-BLOQUE: Grid de recetas propias -->
             <div class="section-title">Mis recetas</div>
             <div class="my-recipes-grid" id="my-recipes-grid">
               <div class="loading-state" style="grid-column:1/-1;">Cargando...</div>
             </div>
-                      <div style="padding:0 14px;">
+
+            <!-- SUB-SUB-BLOQUE: Acciones de cuenta -->
+            <div style="padding:0 14px;">
               <button class="btn outline" onclick="doLogout()">Cerrar sesión</button>
               <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:12px;cursor:pointer;" onclick="openPrivacy()">Política de privacidad</p>
             </div>
@@ -791,7 +856,8 @@
       </div>
     </div>
   </div>
-    <!-- ═══════════════════════════════════════════════════════════════
+
+  <!-- ═══════════════════════════════════════════════════════════════
        BLOQUE: MODAL EDITAR PERFIL (HTML)
        ═══════════════════════════════════════════════════════════════ -->
   <div class="modal-overlay hidden" id="edit-profile-modal" onclick="closeEditProfile(event)">
@@ -799,17 +865,20 @@
       <div class="modal-handle"></div>
       <div style="font-size:18px;font-weight:800;margin-bottom:16px;">Editar perfil</div>
 
+      <!-- SUB-BLOQUE: Editar nombre -->
       <div class="form-group">
         <label class="form-label">Nombre visible</label>
         <input class="input" id="edit-name" placeholder="Tu nombre">
       </div>
 
+      <!-- SUB-BLOQUE: Editar bio -->
       <div class="form-group">
         <label class="form-label">Bio (opcional)</label>
         <textarea class="input" id="edit-bio" rows="2" placeholder="Un poco sobre vos, qué cocinás, de dónde sos..." maxlength="120" oninput="document.getElementById('bio-count').textContent=this.value.length"></textarea>
         <div style="font-size:11px;color:var(--muted);text-align:right;margin-top:3px;"><span id="bio-count">0</span>/120</div>
       </div>
 
+      <!-- SUB-BLOQUE: Picker de nivel -->
       <div class="form-group">
         <label class="form-label">Tu nivel</label>
         <div style="display:flex;flex-direction:column;gap:8px;" id="level-picker">
@@ -836,10 +905,14 @@
       <button class="btn outline" onclick="closeEditProfile(null)" style="margin-top:4px;">Cancelar</button>
     </div>
   </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       BLOQUE: MODAL PERFIL AJENO (HTML)
+       ═══════════════════════════════════════════════════════════════ -->
   <div class="modal-overlay hidden" id="user-profile-modal" onclick="closeUserProfile(event)">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-<div id="user-profile-body"></div>
+      <div id="user-profile-body"></div>
     </div>
   </div>
 
@@ -852,6 +925,7 @@
       <div id="modal-body"></div>
     </div>
   </div>
+
   <!-- ═══════════════════════════════════════════════════════════════
        BLOQUE: MODAL PRIVACIDAD (HTML)
        ═══════════════════════════════════════════════════════════════ -->
@@ -861,46 +935,39 @@
       <div class="privacy-body">
         <h2>Política de Privacidad</h2>
         <p>Sobre Gustos es un proyecto comunitario. Te contamos qué hacemos con tus datos.</p>
-
         <h2>Qué datos guardamos</h2>
         <p>Tu nombre visible, @usuario y email. Eso es todo. No pedimos ni guardamos ubicación, fotos ni datos sensibles.</p>
-
         <h2>Para qué los usamos</h2>
         <p>Para identificar tus recetas y comentarios. Para que puedas recuperar tu cuenta. Nada más.</p>
-
         <h2>No vendemos datos</h2>
         <p>Tus datos no se venden a terceros, marcas, ni nadie. Si en el futuro hubiese publicidad, sería contextual y sin compartir información personal de usuarios.</p>
-
         <h2>Cómo almacenamos</h2>
         <p>Usamos Firebase (Google). Los datos están en servidores de Google con sus políticas de seguridad. No tenemos acceso directo a las contraseñas — Firebase las maneja.</p>
-
         <h2>Tus derechos</h2>
         <p><a href="mailto:hipercompartido@gmail.com">Escribinos</a> si querés que borremos tu cuenta y todos tus datos. Lo hacemos sin chistes en menos de 48hs.</p>
-
         <h2>Cookies y almacenamiento local</h2>
-        <p> Firebase usa cookies técnicas para mantener tu sesión abierta. No usamos cookies de rastreo ni de terceros con fines publicitarios.</p>
-
+        <p>Firebase usa cookies técnicas para mantener tu sesión abierta. No usamos cookies de rastreo ni de terceros con fines publicitarios.</p>
         <h2>Cambios</h2>
         <p>Si algo cambia acá, lo avisamos en la app. Fecha de última actualización: julio 2025.</p>
       </div>
       <button class="btn" onclick="closePrivacy(null)" style="margin-top:16px;">Cerrar</button>
-      
-  
+    </div>
   </div>
+
   <script type="module">
   // ═══════════════════════════════════════════════════════════════
   // BLOQUE: FIREBASE INIT
   // ═══════════════════════════════════════════════════════════════
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import {
-        getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
     onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
   import {
-        getFirestore, collection, addDoc, doc, updateDoc, increment, deleteDoc,
+    getFirestore, collection, addDoc, doc, updateDoc, increment, deleteDoc,
     query, orderBy, onSnapshot, getDocs, where, getDoc, arrayUnion, arrayRemove
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-      import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+  import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyB6Mx7p29ptV2p8j9F-C66AsHRGe4ASplw",
@@ -914,9 +981,7 @@
   const fbApp = initializeApp(firebaseConfig);
   const auth = getAuth(fbApp);
   const db = getFirestore(fbApp);
-      const storage = getStorage(fbApp);
-      let seedDone = false;
-  seedRecipes();
+  const storage = getStorage(fbApp);
 
   // ═══════════════════════════════════════════════════════════════
   // BLOQUE: STATE GLOBAL
@@ -928,14 +993,414 @@
   let authMode = 'register';
   let selectedEmoji = '🍝';
   let currentVote = null;
-     
+  let pendingPhotos = [];
+
+  // FIX #1: editLevel inicializado en 'inicio' (existía 'foodie' que no existe)
+  let editLevel = 'inicio';
 
   const $ = id => document.getElementById(id);
 
   // ═══════════════════════════════════════════════════════════════
-  // BLOQUE: UTILIDADES
+  // BLOQUE: HELPERS VISUALES
   // ═══════════════════════════════════════════════════════════════
-    async function seedRecipes() {
+  const colors = ['#FAE8E2','#E8F5EE','#E8F0FB','#FAEEDA','#F3E8FA'];
+  const textColors = ['#993C1D','#2E7D52','#1A5FA8','#854F0B','#6B3D9A'];
+
+  function avatarStyle(str) {
+    const i = (str || 'U').charCodeAt(0) % colors.length;
+    return `background:${colors[i]};color:${textColors[i]}`;
+  }
+
+  function initials(name) {
+    return (name || 'U').split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+  }
+
+  function fmtDate(ts) {
+    if (!ts) return 'Reciente';
+    try {
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      const diff = Math.floor((Date.now() - d) / 60000);
+      if (diff < 1) return 'ahora';
+      if (diff < 60) return `hace ${diff} min`;
+      if (diff < 1440) return `hace ${Math.floor(diff / 60)} hs`;
+      return d.toLocaleDateString('es-AR', { day: 'numeric', month: 'short' });
+    } catch { return 'Reciente'; }
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOQUE: TOAST
+  // ═══════════════════════════════════════════════════════════════
+  window.showToast = function(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOQUE: SHARE
+  // ═══════════════════════════════════════════════════════════════
+  window.shareApp = async function() {
+    const data = {
+      title: 'Sobre Gustos — recetas con historia',
+      text: 'Mirá esta app de recetas con historia y opinión incluida 🍳',
+      url: 'https://hipercompartido.github.io/sobre-gustos/'
+    };
+    if (navigator.share) {
+      try { await navigator.share(data); } catch {}
+    } else {
+      try {
+        await navigator.clipboard.writeText(data.url);
+        showToast('Link copiado al portapapeles 📋');
+      } catch {
+        showToast('No se pudo copiar el link');
+      }
+    }
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOQUE: MODAL PRIVACIDAD - LÓGICA
+  // ═══════════════════════════════════════════════════════════════
+  window.openPrivacy = function() {
+    $('privacy-modal').classList.remove('hidden');
+  };
+  window.closePrivacy = function(e) {
+    if (e === null || e.target === $('privacy-modal')) {
+      $('privacy-modal').classList.add('hidden');
+    }
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOQUE: MODAL EDITAR PERFIL - LÓGICA
+  // ═══════════════════════════════════════════════════════════════
+  const LEVELS = {
+    inicio:  { emoji: '🌱', label: 'Inicio' },
+    prueba:  { emoji: '🍳', label: 'En práctica' },
+    punto:   { emoji: '🍲', label: 'A punto' },
+    firma:   { emoji: '✨', label: 'Con firma' }
+  };
+
+  window.pickLevel = function(el, level) {
+    document.querySelectorAll('.level-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    editLevel = level;
+  };
+
+  window.openEditProfile = function() {
+    if (!currentUserData) return;
+    $('edit-name').value = currentUserData.name || '';
+    $('edit-bio').value = currentUserData.bio || '';
+    $('bio-count').textContent = (currentUserData.bio || '').length;
+    editLevel = currentUserData.level || 'inicio';
+    document.querySelectorAll('.level-opt').forEach(o => o.classList.remove('selected'));
+    const target = document.querySelector(`.level-opt[onclick*="'${editLevel}'"]`);
+    if (target) target.classList.add('selected');
+    $('edit-profile-modal').classList.remove('hidden');
+  };
+
+  window.closeEditProfile = function(e) {
+    if (e === null || e.target === $('edit-profile-modal')) {
+      $('edit-profile-modal').classList.add('hidden');
+    }
+  };
+
+  window.saveProfile = async function() {
+    const name = $('edit-name').value.trim();
+    const bio = $('edit-bio').value.trim();
+    if (!name) return showToast('Escribí un nombre');
+    try {
+      await updateDoc(doc(db, "profiles", currentUserData.id), { name, bio, level: editLevel });
+      currentUserData.name = name;
+      currentUserData.bio = bio;
+      currentUserData.level = editLevel;
+      $('prof-name').textContent = name;
+      const lvl = LEVELS[editLevel];
+      const badge = $('prof-level-badge');
+      badge.style.display = 'inline-flex';
+      badge.textContent = lvl.emoji + ' ' + lvl.label;
+      $('prof-bio').textContent = bio;
+      $('prof-avatar').textContent = initials(name);
+      $('prof-avatar').style = avatarStyle(name);
+      $('edit-profile-modal').classList.add('hidden');
+      showToast('¡Perfil actualizado! ✅');
+    } catch (err) {
+      console.error(err);
+      showToast('Error al guardar');
+    }
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOQUE: MODAL PERFIL AJENO - LÓGICA
+  // ═══════════════════════════════════════════════════════════════
+  window.openUserProfile = async function(uid) {
+    if (uid === 'seed') { showToast('Receta de ejemplo de la app'); return; }
+    if (currentUser && uid === currentUser.uid) { closeUserProfile(null); nav('profile'); return; }
+
+    const profSnap = await getDocs(query(collection(db, "profiles"), where("uid", "==", uid)));
+    let profile = null;
+    profSnap.forEach(d => { if (d.data().uid === uid) profile = { id: d.id, ...d.data() }; });
+    if (!profile) { showToast('Usuario no encontrado'); return; }
+
+    const name = profile.name || 'Chef';
+    const user = profile.user || 'anon';
+    const bio = profile.bio || '';
+    const level = profile.level || 'inicio';
+    const lvl = LEVELS[level] || LEVELS.inicio;
+    const userRecipes = allRecipes.filter(r => r.uid === uid);
+
+    let isFollowing = false;
+    let followerCount = 0;
+    let followingCount = 0;
+
+    if (currentUser) {
+      const fSnap = await getDocs(query(collection(db, "follows"), where("from", "==", currentUser.uid), where("to", "==", uid)));
+      isFollowing = !fSnap.empty;
+    }
+    followerCount = (await getDocs(query(collection(db, "follows"), where("to", "==", uid)))).size;
+    followingCount = (await getDocs(query(collection(db, "follows"), where("from", "==", uid)))).size;
+
+    const bgColors = ['#FAEEDA','#E1F5EE','#FAECE7','#E6F1FB','#F3E8FA'];
+    let recipesHtml = '';
+    if (userRecipes.length > 0) {
+      recipesHtml = `<div class="section-title">Recetas</div><div class="my-recipes-grid">
+        ${userRecipes.map((r, i) => `<div class="mini-card" onclick="closeUserProfile(null);openRecipeDetail('${r.id}')">
+          <div class="mini-banner" style="background:${bgColors[i % bgColors.length]}">${r.emoji || '🍳'}</div>
+          <div class="mini-title">${r.title}</div>
+        </div>`).join('')}</div>`;
+    }
+
+    const followBtnHtml = currentUser
+      ? `<button class="follow-btn ${isFollowing ? 'following' : 'not-following'}" id="follow-btn-${uid}" onclick="toggleFollow('${uid}','${profile.id}')">${isFollowing ? 'Siguiendo' : 'Seguir'}</button>`
+      : `<button class="follow-btn not-following" onclick="requireAuth('Iniciá sesión para seguir a alguien')">Seguir</button>`;
+
+    $('user-profile-body').innerHTML = `
+      <div style="text-align:center;padding:10px 0 16px;">
+        <div class="big-avatar" style="${avatarStyle(name)};margin:0 auto 10px;">${initials(name)}</div>
+        <div style="font-size:20px;font-weight:800;">${name}</div>
+        <div class="level-badge" style="margin-top:6px;">${lvl.emoji} ${lvl.label}</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:2px;">@${user}</div>
+        ${bio ? `<div class="profile-bio">${bio}</div>` : ''}
+        <div style="display:flex;justify-content:center;gap:24px;margin-top:12px;">
+          <div class="stat"><div class="stat-num">${userRecipes.length}</div><div class="stat-lab">Recetas</div></div>
+          <div class="stat"><div class="stat-num" id="up-followers-${uid}">${followerCount}</div><div class="stat-lab">Seguidores</div></div>
+          <div class="stat"><div class="stat-num">${followingCount}</div><div class="stat-lab">Siguiendo</div></div>
+        </div>
+        ${followBtnHtml}
+      </div>
+      ${recipesHtml}
+      <button class="btn outline" onclick="closeUserProfile(null)" style="margin-top:12px;">Cerrar</button>`;
+
+    $('user-profile-modal').classList.remove('hidden');
+  };
+
+  window.closeUserProfile = function(e) {
+    if (e === null || e.target === $('user-profile-modal')) {
+      $('user-profile-modal').classList.add('hidden');
+    }
+  };
+
+  window.toggleFollow = async function(uid, profileDocId) {
+    if (!currentUser) { requireAuth('Iniciá sesión para seguir'); return; }
+    const btn = $('follow-btn-' + uid);
+    if (!btn) return;
+    const fSnap = await getDocs(query(collection(db, "follows"), where("from", "==", currentUser.uid), where("to", "==", uid)));
+    const isFollowing = !fSnap.empty;
+    if (isFollowing) {
+      fSnap.forEach(d => deleteDoc(doc(db, "follows", d.id)));
+      btn.className = 'follow-btn not-following';
+      btn.textContent = 'Seguir';
+      const counter = $('up-followers-' + uid);
+      if (counter) counter.textContent = Math.max(0, parseInt(counter.textContent) - 1);
+      showToast('Dejaste de seguir');
+    } else {
+      await addDoc(collection(db, "follows"), { from: currentUser.uid, to: uid, createdAt: new Date() });
+      btn.className = 'follow-btn following';
+      btn.textContent = 'Siguiendo';
+      const counter = $('up-followers-' + uid);
+      if (counter) counter.textContent = parseInt(counter.textContent) + 1;
+      showToast('¡Ahora los seguís!');
+    }
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOQUE: AUTH MODAL - LÓGICA
+  // ═══════════════════════════════════════════════════════════════
+  window.requireAuth = function(reason) {
+    if (currentUser) return true;
+    $('auth-modal-reason').textContent = reason || 'Uníte para participar';
+    $('auth-modal').classList.remove('hidden');
+    return false;
+  };
+
+  window.closeAuthModal = function(e) {
+    if (e === null || e.target === $('auth-modal')) {
+      $('auth-modal').classList.add('hidden');
+      $('auth-msg').textContent = '';
+    }
+  };
+
+  window.toggleAuthMode = function() {
+    authMode = authMode === 'register' ? 'login' : 'register';
+    const isReg = authMode === 'register';
+    $('auth-register-fields').style.display = isReg ? '' : 'none';
+    $('auth-submit-btn').textContent = isReg ? 'Crear cuenta' : 'Entrar';
+    $('auth-toggle-text').innerHTML = isReg
+      ? '¿Ya tenés cuenta? <span onclick="toggleAuthMode()">Entrá acá</span>'
+      : '¿No tenés cuenta? <span onclick="toggleAuthMode()">Registrate</span>';
+  };
+
+  window.handleAuth = async function() {
+    const email = $('auth-email').value.trim();
+    const pass = $('auth-pass').value;
+    if (!email || pass.length < 6) { $('auth-msg').textContent = 'Email válido y contraseña de 6+ caracteres.'; return; }
+    $('auth-msg').textContent = 'Conectando...';
+    try {
+      if (authMode === 'register') {
+        const name = $('auth-name').value.trim();
+        const user = $('auth-user').value.trim().replace(/[^a-zA-Z0-9_]/g, '');
+        if (!name || !user) { $('auth-msg').textContent = 'Completá nombre y @usuario.'; return; }
+        const cred = await createUserWithEmailAndPassword(auth, email, pass);
+        await addDoc(collection(db, "profiles"), { uid: cred.user.uid, email, name, user, level: 'inicio', bio: '', createdAt: new Date() });
+      } else {
+        await signInWithEmailAndPassword(auth, email, pass);
+      }
+      $('auth-modal').classList.add('hidden');
+    } catch (err) {
+      $('auth-msg').textContent = err.code === 'auth/email-already-in-use'
+        ? 'Ese email ya está registrado. ¿Querés entrar?' : err.message.replace('Firebase: ', '');
+    }
+  };
+
+  // SUB-BLOQUE: Login con Google
+  window.signInWithGoogle = async function() {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const snap = await getDocs(query(collection(db, "profiles")));
+      let found = false;
+      snap.forEach(d => { if (d.data().uid === user.uid) found = true; });
+      if (!found) {
+        const name = user.displayName || 'Chef';
+        const userHandle = (user.email || '').split('@')[0].replace(/[^a-zA-Z0-9_]/g, '');
+        await addDoc(collection(db, "profiles"), {
+          uid: user.uid, email: user.email, name,
+          user: userHandle || 'chef_' + Date.now(),
+          level: 'inicio', bio: '', createdAt: new Date()
+        });
+      }
+      $('auth-modal').classList.add('hidden');
+    } catch (err) {
+      if (err.code !== 'auth/popup-closed-by-user') {
+        $('auth-msg').textContent = err.message.replace('Firebase: ', '');
+      }
+    }
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOQUE: AUTH STATE LISTENER
+  // ═══════════════════════════════════════════════════════════════
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      currentUser = user;
+      $('auth-modal').classList.add('hidden');
+      const snap = await getDocs(query(collection(db, "profiles")));
+      snap.forEach(d => { if (d.data().uid === user.uid) { currentUserData = { id: d.id, ...d.data() }; } });
+      if (currentUserData) {
+        $('prof-name').textContent = currentUserData.name;
+        $('prof-user').textContent = '@' + currentUserData.user;
+        $('prof-avatar').style = avatarStyle(currentUserData.name);
+        $('prof-avatar').textContent = initials(currentUserData.name);
+
+        // FIX #2: Mostrar badge de nivel al cargar perfil
+        const lvl = LEVELS[currentUserData.level || 'inicio'];
+        const badge = $('prof-level-badge');
+        badge.style.display = 'inline-flex';
+        badge.textContent = lvl.emoji + ' ' + lvl.label;
+
+        // FIX #2b: Mostrar bio al cargar perfil
+        $('prof-bio').textContent = currentUserData.bio || '';
+      }
+      updateProfileView();
+      renderFeed();
+    } else {
+      currentUser = null;
+      currentUserData = null;
+      updateProfileView();
+      renderFeed();
+    }
+  });
+
+  function updateProfileView() {
+    const guest = $('profile-guest');
+    const logged = $('profile-logged');
+    if (currentUser) {
+      guest.classList.add('hidden');
+      logged.classList.remove('hidden');
+    } else {
+      guest.classList.remove('hidden');
+      logged.classList.add('hidden');
+    }
+  }
+
+  window.doLogout = () => signOut(auth);
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOQUE: NAVEGACIÓN
+  // ═══════════════════════════════════════════════════════════════
+  window.navAdd = function() {
+    if (!requireAuth('Creá una cuenta para publicar tu receta 🚀')) return;
+    nav('add');
+  };
+
+  loadRecipes();
+  loadCommunity();
+
+  window.nav = function(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    $('p-' + page).classList.add('active');
+    $('tab-' + page).classList.add('active');
+
+    const cfg = {
+      home:      { title: 'Sobre Gustos', sub: 'recetas con historia ✶ opinión incluida', extras: true },
+      community: { title: 'Lo que se cuece 💬', sub: 'la comunidad habla — vos opinás', extras: false },
+      add:       { title: 'Nueva receta ✍️', sub: 'compartí lo que cocinás', extras: false },
+      profile:   { title: 'Mi perfil', sub: 'tu espacio personal', extras: false }
+    };
+    const c = cfg[page] || cfg.home;
+    $('page-title').textContent = c.title;
+    $('page-sub').textContent = c.sub;
+    $('topbar-extras').classList.toggle('collapsed', !c.extras);
+
+    if (page === 'profile') loadProfile();
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOQUE: FILTROS (CHIPS + BÚSQUEDA)
+  // ═══════════════════════════════════════════════════════════════
+  window.filterChip = function(el, value) {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    activeChipFilter = value;
+    renderFeed();
+  };
+
+  window.filterFeed = function() { renderFeed(); };
+
+  function matchesFilter(r) {
+    const q = $('search-input')?.value?.toLowerCase() || '';
+    const matchQ = !q || r.title?.toLowerCase().includes(q) || r.story?.toLowerCase().includes(q) || (r.tags || []).join(' ').toLowerCase().includes(q);
+    const matchChip = !activeChipFilter || r.emoji === activeChipFilter;
+    return matchQ && matchChip;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // BLOQUE: SEED RECIPES
+  // ═══════════════════════════════════════════════════════════════
+  let seedDone = false;
+
+  async function seedRecipes() {
     if (seedDone) return;
     const snap = await getDocs(collection(db, "recipes"));
     if (!snap.empty) { seedDone = true; return; }
@@ -1095,362 +1560,8 @@
     }
     showToast('¡Recetas de ejemplo cargadas! 🎉');
   }
-        const LEVELS = { inicio: { emoji: '🌱', label: 'Inicio' }, prueba: { emoji: '🍳', label: 'En práctica' }, punto: { emoji: '🍲', label: 'A punto' }, firma: { emoji: '✨', label: 'Con firma' } };
 
-  let editLevel = 'foodie';
-
-  window.pickLevel = function(el, level) {
-    document.querySelectorAll('.level-opt').forEach(o => o.classList.remove('selected'));
-    el.classList.add('selected');
-    editLevel = level;
-  };
-
-  window.openEditProfile = function() {
-    if (!currentUserData) return;
-    $('edit-name').value = currentUserData.name || '';
-    $('edit-bio').value = currentUserData.bio || '';
-    $('bio-count').textContent = (currentUserData.bio || '').length;
-    editLevel = currentUserData.level || 'foodie';
-    document.querySelectorAll('.level-opt').forEach(o => o.classList.remove('selected'));
-    const target = document.querySelector(`.level-opt[onclick*="'${editLevel}'"]`);
-    if (target) target.classList.add('selected');
-    $('edit-profile-modal').classList.remove('hidden');
-  };
-
-  window.closeEditProfile = function(e) {
-    if (e === null || e.target === $('edit-profile-modal')) {
-      $('edit-profile-modal').classList.add('hidden');
-    }
-  };
-
-  window.saveProfile = async function() {
-    const name = $('edit-name').value.trim();
-    const bio = $('edit-bio').value.trim();
-    if (!name) return showToast('Escribí un nombre');
-    try {
-      await updateDoc(doc(db, "profiles", currentUserData.id), { name, bio, level: editLevel });
-      currentUserData.name = name;
-      currentUserData.bio = bio;
-      currentUserData.level = editLevel;
-      $('prof-name').textContent = name;
-      const lvl = LEVELS[editLevel];
-      const badge = $('prof-level-badge');
-      badge.style.display = 'inline-flex';
-      badge.textContent = lvl.emoji + ' ' + lvl.label;
-      $('prof-bio').textContent = bio;
-      $('prof-avatar').textContent = initials(name);
-      $('prof-avatar').style = avatarStyle(name);
-      $('edit-profile-modal').classList.add('hidden');
-      showToast('¡Perfil actualizado! ✅');
-    } catch (err) { showToast('Error al guardar'); }
-  };
-     window.openUserProfile = async function(uid) {
-    
-    if (uid === 'seed') { showToast('Receta de ejemplo de la app'); return; }
-    
-    if (currentUser && uid === currentUser.uid) { closeUserProfile(null); nav('profile'); return; }
-   
-   
-    const profSnap = await getDocs(query(collection(db, "profiles"), where("uid", "==", uid)));
-    
-    let profile = null;
-    profSnap.forEach(d => { if (d.data().uid === uid) profile = { id: d.id, ...d.data() }; });
-    if (!profile) { showToast('Usuario no encontrado'); return; }
-
-    const name = profile.name || 'Chef';
-    const user = profile.user || 'anon';
-    const bio = profile.bio || '';
-    const level = profile.level || 'inicio';
-    const lvl = LEVELS[level] || LEVELS.inicio;
-    const userRecipes = allRecipes.filter(r => r.uid === uid);
-
-    let isFollowing = false;
-    let followerCount = 0;
-    let followingCount = 0;
-
-    if (currentUser) {
-      const fSnap = await getDocs(query(collection(db, "follows"), where("from", "==", currentUser.uid), where("to", "==", uid)));
-      isFollowing = !fSnap.empty;
-    }
-    followerCount = (await getDocs(query(collection(db, "follows"), where("to", "==", uid)))).size;
-    followingCount = (await getDocs(query(collection(db, "follows"), where("from", "==", uid)))).size;
-
-    const bgColors = ['#FAEEDA','#E1F5EE','#FAECE7','#E6F1FB','#F3E8FA'];
-    let recipesHtml = '';
-    if (userRecipes.length > 0) {
-      recipesHtml = `<div class="section-title">Recetas</div><div class="my-recipes-grid">
-        ${userRecipes.map((r,i) => `<div class="mini-card" onclick="closeUserProfile(null);openRecipeDetail('${r.id}')">
-          <div class="mini-banner" style="background:${bgColors[i%bgColors.length]}">${r.emoji||'🍳'}</div>
-          <div class="mini-title">${r.title}</div>
-        </div>`).join('')}</div>`;
-    }
-
-    const followBtnHtml = currentUser
-      ? `<button class="follow-btn ${isFollowing?'following':'not-following'}" id="follow-btn-${uid}" onclick="toggleFollow('${uid}','${profile.id}')">${isFollowing?'Siguiendo':'Seguir'}</button>`
-      : `<button class="follow-btn not-following" onclick="requireAuth('Iniciá sesión para seguir a alguien')">Seguir</button>`;
-
-    $('user-profile-body').innerHTML = `
-      <div style="text-align:center;padding:10px 0 16px;">
-        <div class="big-avatar" style="${avatarStyle(name)};margin:0 auto 10px;">${initials(name)}</div>
-        <div style="font-size:20px;font-weight:800;">${name}</div>
-        <div class="level-badge" style="margin-top:6px;">${lvl.emoji} ${lvl.label}</div>
-        <div style="font-size:13px;color:var(--muted);margin-top:2px;">@${user}</div>
-        ${bio ? `<div class="profile-bio">${bio}</div>` : ''}
-        <div style="display:flex;justify-content:center;gap:24px;margin-top:12px;">
-          <div class="stat"><div class="stat-num">${userRecipes.length}</div><div class="stat-lab">Recetas</div></div>
-          <div class="stat"><div class="stat-num" id="up-followers-${uid}">${followerCount}</div><div class="stat-lab">Seguidores</div></div>
-          <div class="stat"><div class="stat-num">${followingCount}</div><div class="stat-lab">Siguiendo</div></div>
-        </div>
-        ${followBtnHtml}
-      </div>
-      ${recipesHtml}
-      <button class="btn outline" onclick="closeUserProfile(null)" style="margin-top:12px;">Cerrar</button>`;
-
-    
-    $('user-profile-modal').classList.remove('hidden');
-    showToast('modal abierto');
-  };
-
-  window.closeUserProfile = function(e) {
-    if (e === null || e.target === $('user-profile-modal')) {
-      $('user-profile-modal').classList.add('hidden');
-    }
-  };
-
-  window.toggleFollow = async function(uid, profileDocId) {
-    if (!currentUser) { requireAuth('Iniciá sesión para seguir'); return; }
-    const btn = $('follow-btn-' + uid);
-    if (!btn) return;
-    const fSnap = await getDocs(query(collection(db, "follows"), where("from", "==", currentUser.uid), where("to", "==", uid)));
-    const isFollowing = !fSnap.empty;
-    if (isFollowing) {
-      fSnap.forEach(d => deleteDoc(doc(db, "follows", d.id)));
-      btn.className = 'follow-btn not-following';
-      btn.textContent = 'Seguir';
-      const counter = $('up-followers-' + uid);
-      if (counter) counter.textContent = Math.max(0, parseInt(counter.textContent) - 1);
-      showToast('Dejaste de seguir');
-    } else {
-      await addDoc(collection(db, "follows"), { from: currentUser.uid, to: uid, createdAt: new Date() });
-      btn.className = 'follow-btn following';
-      btn.textContent = 'Siguiendo';
-      const counter = $('up-followers-' + uid);
-      if (counter) counter.textContent = parseInt(counter.textContent) + 1;
-      showToast('¡Ahora los seguís!');
-    }
-  };
-    window.showToast = function(msg) {
-    const t = $('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
-  };
-
-  const colors = ['#FAE8E2','#E8F5EE','#E8F0FB','#FAEEDA','#F3E8FA'];
-  const textColors = ['#993C1D','#2E7D52','#1A5FA8','#854F0B','#6B3D9A'];
-  function avatarStyle(str) {
-    const i = (str || 'U').charCodeAt(0) % colors.length;
-    return `background:${colors[i]};color:${textColors[i]}`;
-  }
-  function initials(name) {
-    return (name || 'U').split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
-  }
-  function fmtDate(ts) {
-    if (!ts) return 'Reciente';
-    try {
-      const d = ts.toDate ? ts.toDate() : new Date(ts);
-      const diff = Math.floor((Date.now() - d) / 60000);
-      if (diff < 1) return 'ahora';
-      if (diff < 60) return `hace ${diff} min`;
-      if (diff < 1440) return `hace ${Math.floor(diff/60)} hs`;
-      return d.toLocaleDateString('es-AR', { day:'numeric', month:'short' });
-    } catch { return 'Reciente'; }
-  }
-  window.shareApp = async function() {
-    const data = {
-      title: 'Sobre Gustos — recetas con historia',
-      text: 'Mirá esta app de recetas con historia y opinión incluida 🍳',
-      url: 'https://hipercompartido.github.io/sobre-gustos/'
-    };
-    if (navigator.share) {
-      try { await navigator.share(data); } catch {}
-    } else {
-      try {
-        await navigator.clipboard.writeText(data.url);
-        showToast('Link copiado al portapapeles 📋');
-      } catch {
-        showToast('No se pudo copiar el link');
-      }
-    }
-  };
-      window.openPrivacy = function() {
-    $('privacy-modal').classList.remove('hidden');
-  };
-  window.closePrivacy = function(e) {
-    if (e === null || e.target === $('privacy-modal')) {
-      $('privacy-modal').classList.add('hidden');
-    }
-  };
-  // ═══════════════════════════════════════════════════════════════
-  // BLOQUE: AUTH MODAL - LÓGICA
-  // ═══════════════════════════════════════════════════════════════
-  window.requireAuth = function(reason) {
-    if (currentUser) return true;
-    $('auth-modal-reason').textContent = reason || 'Uníte para participar';
-    $('auth-modal').classList.remove('hidden');
-    return false;
-  };
-
-  window.closeAuthModal = function(e) {
-    if (e === null || e.target === $('auth-modal')) {
-      $('auth-modal').classList.add('hidden');
-      $('auth-msg').textContent = '';
-    }
-  };
-
-  window.toggleAuthMode = function() {
-    authMode = authMode === 'register' ? 'login' : 'register';
-    const isReg = authMode === 'register';
-    $('auth-register-fields').style.display = isReg ? '' : 'none';
-    $('auth-submit-btn').textContent = isReg ? 'Crear cuenta' : 'Entrar';
-    $('auth-toggle-text').innerHTML = isReg
-      ? '¿Ya tenés cuenta? <span onclick="toggleAuthMode()">Entrá acá</span>'
-      : '¿No tenés cuenta? <span onclick="toggleAuthMode()">Registrate</span>';
-  };
-
-  window.handleAuth = async function() {
-    const email = $('auth-email').value.trim();
-    const pass = $('auth-pass').value;
-    if (!email || pass.length < 6) { $('auth-msg').textContent = 'Email válido y contraseña de 6+ caracteres.'; return; }
-    $('auth-msg').textContent = 'Conectando...';
-    try {
-      if (authMode === 'register') {
-        const name = $('auth-name').value.trim();
-        const user = $('auth-user').value.trim().replace(/[^a-zA-Z0-9_]/g,'');
-        if (!name || !user) { $('auth-msg').textContent = 'Completá nombre y @usuario.'; return; }
-        const cred = await createUserWithEmailAndPassword(auth, email, pass);
-        await addDoc(collection(db, "profiles"), { uid: cred.user.uid, email, name, user, level: 'inicio', bio: '', createdAt: new Date() });
-      } else {
-        await signInWithEmailAndPassword(auth, email, pass);
-      }
-      $('auth-modal').classList.add('hidden');
-    } catch (err) {
-      $('auth-msg').textContent = err.code === 'auth/email-already-in-use'
-        ? 'Ese email ya está registrado. ¿Querés entrar?' : err.message.replace('Firebase: ','');
-    }
-  };
-  window.signInWithGoogle = async function() {
-    try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      const snap = await getDocs(query(collection(db, "profiles")));
-      let found = false;
-      snap.forEach(d => { if (d.data().uid === user.uid) found = true; });
-      if (!found) {
-        const name = user.displayName || 'Chef';
-        const userHandle = (user.email || '').split('@')[0].replace(/[^a-zA-Z0-9_]/g,'');
-        await addDoc(collection(db, "profiles"), {
-          uid: user.uid, email: user.email, name,
-          user: userHandle || 'chef_' + Date.now(),
-          createdAt: new Date()
-        });
-      }
-      $('auth-modal').classList.add('hidden');
-    } catch (err) {
-      if (err.code !== 'auth/popup-closed-by-user') {
-        $('auth-msg').textContent = err.message.replace('Firebase: ','');
-      }
-    }
-  };
-
-  // ═══════════════════════════════════════════════════════════════
-  // BLOQUE: AUTH STATE LISTENER
-  // ═══════════════════════════════════════════════════════════════
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      currentUser = user;
-      $('auth-modal').classList.add('hidden');
-      const snap = await getDocs(query(collection(db, "profiles")));
-      snap.forEach(d => { if (d.data().uid === user.uid) { currentUserData = { id: d.id, ...d.data() }; } });
-      if (currentUserData) {
-        $('prof-name').textContent = currentUserData.name;
-        $('prof-user').textContent = '@' + currentUserData.user;
-        $('prof-avatar').style = avatarStyle(currentUserData.name);
-        $('prof-avatar').textContent = initials(currentUserData.name);
-      }
-      updateProfileView();
-      renderFeed();
-    } else {
-      currentUser = null; currentUserData = null;
-      updateProfileView();
-      renderFeed();
-    }
-  });
-
-  function updateProfileView() {
-    const guest = $('profile-guest');
-    const logged = $('profile-logged');
-    if (currentUser) {
-      guest.classList.add('hidden');
-      logged.classList.remove('hidden');
-    } else {
-      guest.classList.remove('hidden');
-      logged.classList.add('hidden');
-    }
-  }
-
-  window.doLogout = () => signOut(auth);
-
-  // ═══════════════════════════════════════════════════════════════
-  // BLOQUE: NAVEGACIÓN
-  // ═══════════════════════════════════════════════════════════════
-  window.navAdd = function() {
-    if (!requireAuth('Creá una cuenta para publicar tu receta 🚀')) return;
-    nav('add');
-  };
-
-  loadRecipes();
-  loadCommunity();
-
-  window.nav = function(page) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    $('p-' + page).classList.add('active');
-    $('tab-' + page).classList.add('active');
-
-    const cfg = {
-      home:      { title:'Sobre Gustos', sub:'recetas con historia ✶ opinión incluida', extras:true },
-      community: { title:'Lo que se cuece 💬', sub:'la comunidad habla — vos opinás', extras:false },
-      add:       { title:'Nueva receta ✍️', sub:'compartí lo que cocinás', extras:false },
-      profile:   { title:'Mi perfil', sub:'tu espacio personal', extras:false }
-    };
-    const c = cfg[page] || cfg.home;
-    $('page-title').textContent = c.title;
-    $('page-sub').textContent = c.sub;
-    $('topbar-extras').classList.toggle('collapsed', !c.extras);
-
-    if (page === 'profile') loadProfile();
-  };
-
-  // ═══════════════════════════════════════════════════════════════
-  // BLOQUE: FILTROS (CHIPS + BÚSQUEDA)
-  // ═══════════════════════════════════════════════════════════════
-  window.filterChip = function(el, value) {
-    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
-    activeChipFilter = value;
-    renderFeed();
-  };
-
-  window.filterFeed = function() { renderFeed(); };
-
-   function matchesFilter(r) {
-    const q = $('search-input')?.value?.toLowerCase() || '';
-    const matchQ = !q || r.title?.toLowerCase().includes(q) || r.story?.toLowerCase().includes(q) || (r.tags||[]).join(' ').toLowerCase().includes(q);
-    const matchChip = !activeChipFilter || r.emoji === activeChipFilter;
-    return matchQ && matchChip;
-  }
+  seedRecipes();
 
   // ═══════════════════════════════════════════════════════════════
   // BLOQUE: RECIPES - CARGA Y RENDER
@@ -1467,26 +1578,26 @@
     const feed = $('feed-list');
     const filtered = allRecipes.filter(matchesFilter);
     if (filtered.length === 0) {
-      feed.innerHTML = `<div class="empty-state"><div class="empty-icon">🍽️</div><div class="empty-text">No hay recetas todavía.<br>¡Sé el primero en publicar!</div></div>`;
+      feed.innerHTML = `<div class="empty-state"><div class="empty-icon">🍽️</div><div class="empty-text">No hay recetas que coincidan.<br>¡Probá con otro filtro!</div></div>`;
       return;
     }
     let html = '';
     filtered.forEach((r, i) => {
       const liked = currentUser && (r.likedBy || []).includes(currentUser.uid);
       const saved = currentUser && (r.savedBy || []).includes(currentUser.uid);
-      const tagsHtml = (r.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
+      const tagsHtml = (r.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
       const bgColors = ['#FAEEDA','#E1F5EE','#FAECE7','#E6F1FB','#F3E8FA'];
       const bg = bgColors[i % bgColors.length];
       html += `
         <div class="recipe-card" id="rcard-${r.id}">
-          <div class="recipe-emoji-banner" style="background:${bg}">${r.emoji||'🍳'}</div>
-          ${(r.photos && r.photos.length) ? `<div class="recipe-photos">${r.photos.map(p=>`<img src="${p}" loading="lazy">`).join('')}</div>` : ''}
+          <div class="recipe-emoji-banner" style="background:${bg}">${r.emoji || '🍳'}</div>
+          ${(r.photos && r.photos.length) ? `<div class="recipe-photos">${r.photos.map(p => `<img src="${p}" loading="lazy">`).join('')}</div>` : ''}
           <div class="recipe-body">
             <div class="recipe-user-row">
               <div class="av" style="${avatarStyle(r.name)}">${initials(r.name)}</div>
               <div>
-                <div class="recipe-author" style="cursor:pointer;" >${r.name||'Chef'}</div>
-                <div class="recipe-date">@${r.user||'anon'} · ${fmtDate(r.createdAt)}${r.cookTime ? ' · ⏱ '+r.cookTime : ''}</div>
+                <div class="recipe-author" style="cursor:pointer;" onclick="openUserProfile('${r.uid}')">${r.name || 'Chef'}</div>
+                <div class="recipe-date">@${r.user || 'anon'} · ${fmtDate(r.createdAt)}${r.cookTime ? ' · ⏱ ' + r.cookTime : ''}</div>
               </div>
             </div>
             <div class="recipe-title">${r.title}</div>
@@ -1497,14 +1608,14 @@
             ${buildReactions(r)}
           </div>
           <div class="action-bar">
-            <button class="action-btn ${liked?'liked':''}" onclick="toggleLike('${r.id}')">
-              ${liked?'❤️':'🤍'} <span id="lc-${r.id}">${r.likes||0}</span>
+            <button class="action-btn ${liked ? 'liked' : ''}" onclick="toggleLike('${r.id}')">
+              ${liked ? '❤️' : '🤍'} <span id="lc-${r.id}">${r.likes || 0}</span>
             </button>
             <button class="action-btn" onclick="toggleComments('${r.id}')">
-              💬 <span id="cc-${r.id}">${r.commentCount||0}</span>
+              💬 <span id="cc-${r.id}">${r.commentCount || 0}</span>
             </button>
-            <button class="action-btn ${saved?'saved':''}" onclick="toggleSave('${r.id}')" id="savebtn-${r.id}">
-              ${saved?'🔖':'📌'} ${saved?'Guardado':'Guardar'}
+            <button class="action-btn ${saved ? 'saved' : ''}" onclick="toggleSave('${r.id}')" id="savebtn-${r.id}">
+              ${saved ? '🔖' : '📌'} ${saved ? 'Guardado' : 'Guardar'}
             </button>
             <button class="action-btn" onclick="openRecipeDetail('${r.id}')">📖 Ver</button>
           </div>
@@ -1518,7 +1629,7 @@
         </div>`;
 
       if ((i + 1) % 3 === 0) {
-             html += `
+        html += `
           <div class="ad-card">
             <div class="ad-label">Espacio para marcas</div>
             <div class="ad-body" style="justify-content:center;padding:18px 12px;">
@@ -1538,13 +1649,12 @@
   // BLOQUE: REACTIONS EMOJI - LÓGICA
   // ═══════════════════════════════════════════════════════════════
   const REACTIONS = ['😂','🤤','👏','🔥','😮'];
+
   function buildReactions(r) {
     return REACTIONS.map(e => {
       const count = (r.reactions || {})[e] || 0;
       const reacted = currentUser && ((r.reactedBy || {})[e] || []).includes(currentUser.uid);
-      return count > 0 || true
-        ? `<span class="react-pill ${reacted?'active':''}" onclick="addReaction('${r.id}','${e}')">${e} ${count||''}</span>`
-        : '';
+      return `<span class="react-pill ${reacted ? 'active' : ''}" onclick="addReaction('${r.id}','${e}')">${e} ${count || ''}</span>`;
     }).join('');
   }
 
@@ -1605,9 +1715,12 @@
   async function loadComments(recipeId) {
     const clist = $('clist-' + recipeId);
     if (!clist) return;
-    const q = query(collection(db, "recipes", recipeId, "comments"), orderBy("createdAt","asc"));
+    const q = query(collection(db, "recipes", recipeId, "comments"), orderBy("createdAt", "asc"));
     onSnapshot(q, snap => {
-      if (snap.empty) { clist.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:6px 0;">Sé el primero en comentar 💬</div>'; return; }
+      if (snap.empty) {
+        clist.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:6px 0;">Sé el primero en comentar 💬</div>';
+        return;
+      }
       clist.innerHTML = snap.docs.map(d => {
         const c = d.data();
         return `<div class="comment-item">
@@ -1642,7 +1755,6 @@
   window.openRecipeDetail = function(id) {
     const r = allRecipes.find(x => x.id === id);
     if (!r) return;
-    const modal = $('recipe-modal');
     const body = $('modal-body');
     const bgColors = ['#FAEEDA','#E1F5EE','#FAECE7','#E6F1FB'];
     const bg = bgColors[Math.abs(id.charCodeAt(0)) % bgColors.length];
@@ -1651,31 +1763,31 @@
     if (r.ingredients && r.ingredients.length) {
       ingrHtml = `<div style="margin-bottom:14px;">
         <div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px;">Ingredientes</div>
-        ${r.ingredients.map(ig => `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:14px;"><span>${ig.name}</span><span style="color:var(--muted)">${ig.qty||''}</span></div>`).join('')}
+        ${r.ingredients.map(ig => `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:14px;"><span>${ig.name}</span><span style="color:var(--muted)">${ig.qty || ''}</span></div>`).join('')}
       </div>`;
     }
     let stepsHtml = '';
     if (r.steps && r.steps.length) {
       stepsHtml = `<div style="margin-bottom:14px;">
         <div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px;">Preparación</div>
-        ${r.steps.map((s,i) => `<div style="display:flex;gap:10px;margin-bottom:10px;">
-          <div style="width:24px;height:24px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px;">${i+1}</div>
+        ${r.steps.map((s, i) => `<div style="display:flex;gap:10px;margin-bottom:10px;">
+          <div style="width:24px;height:24px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px;">${i + 1}</div>
           <div style="font-size:14px;line-height:1.55;color:var(--text);">${s}</div>
         </div>`).join('')}
       </div>`;
     }
 
     body.innerHTML = `
-      <div style="background:${bg};border-radius:16px;height:120px;display:flex;align-items:center;justify-content:center;font-size:60px;margin-bottom:14px;">${r.emoji||'🍳'}</div>
-      ${(r.photos && r.photos.length) ? r.photos.map(p=>`<img class="detail-photo" src="${p}" loading="lazy">`).join('') : ''}
+      <div style="background:${bg};border-radius:16px;height:120px;display:flex;align-items:center;justify-content:center;font-size:60px;margin-bottom:14px;">${r.emoji || '🍳'}</div>
+      ${(r.photos && r.photos.length) ? r.photos.map(p => `<img class="detail-photo" src="${p}" loading="lazy">`).join('') : ''}
       <div style="font-size:22px;font-weight:800;color:var(--text);margin-bottom:4px;">${r.title}</div>
-            <div style="font-size:13px;color:var(--muted);margin-bottom:${r.story?'12px':'4px'};">Por <span style="cursor:pointer;text-decoration:underline dotted var(--muted);text-underline-offset:2px;" onclick="closeModal(null);openUserProfile('${r.uid}')">${r.name||'Chef'}</span> · @${r.user||'anon'}${r.cookTime?' · ⏱ '+r.cookTime:''}</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:${r.story ? '12px' : '4px'};">Por <span style="cursor:pointer;text-decoration:underline dotted var(--muted);text-underline-offset:2px;" onclick="closeModal(null);openUserProfile('${r.uid}')">${r.name || 'Chef'}</span> · @${r.user || 'anon'}${r.cookTime ? ' · ⏱ ' + r.cookTime : ''}</div>
       ${r.story ? `<div style="font-size:14px;color:#555;line-height:1.55;margin-bottom:14px;padding:12px;background:var(--light);border-radius:12px;border-left:3px solid var(--primary);">${r.story}</div>` : ''}
       ${ingrHtml}
       ${stepsHtml}
       <button class="btn" onclick="closeModal(null)" style="margin-top:8px;">Cerrar</button>
     `;
-    modal.classList.remove('hidden');
+    $('recipe-modal').classList.remove('hidden');
   };
 
   window.closeModal = function(e) {
@@ -1687,12 +1799,15 @@
   // ═══════════════════════════════════════════════════════════════
   // BLOQUE: FORMULARIO AGREGAR - LÓGICA
   // ═══════════════════════════════════════════════════════════════
+
+  // SUB-BLOQUE: Emoji picker
   window.selectEmoji = function(el, emoji) {
     document.querySelectorAll('.emoji-opt').forEach(e => e.classList.remove('selected'));
     el.classList.add('selected');
     selectedEmoji = emoji;
   };
 
+  // SUB-BLOQUE: Ingredientes dinámicos
   window.addIngr = function() {
     const list = $('ingr-list');
     const div = document.createElement('div');
@@ -1705,6 +1820,7 @@
     if ($('ingr-list').children.length > 1) row.remove();
   };
 
+  // SUB-BLOQUE: Pasos dinámicos
   window.addStep = function() {
     const list = $('step-list');
     const n = list.children.length + 1;
@@ -1718,10 +1834,10 @@
     if ($('step-list').children.length > 1) { row.remove(); renumberSteps(); }
   };
   function renumberSteps() {
-    document.querySelectorAll('#step-list .step-num').forEach((el,i) => el.textContent = i+1);
+    document.querySelectorAll('#step-list .step-num').forEach((el, i) => el.textContent = i + 1);
   }
-  let pendingPhotos = [];
 
+  // SUB-BLOQUE: Fotos
   window.handlePhotos = function(files) {
     if (!files || files.length === 0) return;
     const remaining = 4 - pendingPhotos.length;
@@ -1773,13 +1889,15 @@
     pendingPhotos.splice(index, 1);
     renderPhotoThumbs();
   };
+
+  // SUB-BLOQUE: Publicar receta
   window.publishRecipe = async function() {
     if (!requireAuth('Registrate para publicar recetas 🚀')) return;
     const title = $('r-title').value.trim();
     if (!title) return showToast('Escribí un título para tu receta');
 
     const story = $('r-story').value.trim();
-    const tags = $('r-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
+    const tags = $('r-tags').value.split(',').map(t => t.trim()).filter(Boolean);
     const cookTime = $('r-time').value.trim();
 
     const ingredients = [];
@@ -1796,12 +1914,29 @@
       if (v) steps.push(v);
     });
 
-        const btn = $('btn-publish');
-    btn.disabled = true; btn.textContent = 'Publicando...';
+    const btn = $('btn-publish');
+    btn.disabled = true;
+
     try {
-            await addDoc(collection(db, "recipes"), {
+      // FIX #4: Subir fotos a Storage en vez de guardar base64 en Firestore
+      btn.textContent = pendingPhotos.length ? 'Subiendo fotos...' : 'Publicando...';
+      const photoUrls = [];
+      for (let i = 0; i < pendingPhotos.length; i++) {
+        const dataUrl = pendingPhotos[i];
+        const response = await fetch(dataUrl);
+        const blob = await response.blob();
+        const path = `recipes/${currentUser.uid}/${Date.now()}_${i}.jpg`;
+        const storageRef = sRef(storage, path);
+        await uploadBytes(storageRef, blob);
+        const url = await getDownloadURL(storageRef);
+        photoUrls.push(url);
+      }
+
+      btn.textContent = 'Publicando...';
+
+      await addDoc(collection(db, "recipes"), {
         title, story, tags, emoji: selectedEmoji, cookTime,
-        ingredients, steps, photos: pendingPhotos,
+        ingredients, steps, photos: photoUrls,
         uid: currentUserData.uid,
         name: currentUserData.name,
         user: currentUserData.user,
@@ -1809,29 +1944,41 @@
         likes: 0, commentCount: 0, likedBy: [], savedBy: [],
         reactions: {}, reactedBy: {}
       });
-      $('r-title').value=''; $('r-story').value=''; $('r-tags').value=''; $('r-time').value='';
-            pendingPhotos = []; renderPhotoThumbs();
-      $('ingr-list').innerHTML=`<div class="ingr-row"><input class="input" placeholder="Ingrediente" style="margin-bottom:0"><input class="input qty" placeholder="Cantidad" style="margin-bottom:0"><button class="del-btn" onclick="delIngr(this)">✕</button></div>`;
-      $('step-list').innerHTML=`<div class="step-row"><div class="step-num">1</div><textarea class="input" placeholder="Describí el primer paso..." rows="2" style="margin-bottom:0"></textarea><button class="del-btn" onclick="delStep(this)" style="margin-top:10px;">✕</button></div>`;
+
+      // Limpiar formulario
+      $('r-title').value = '';
+      $('r-story').value = '';
+      $('r-tags').value = '';
+      $('r-time').value = '';
+      pendingPhotos = [];
+      renderPhotoThumbs();
+      $('ingr-list').innerHTML = `<div class="ingr-row"><input class="input" placeholder="Ingrediente" style="margin-bottom:0"><input class="input qty" placeholder="Cantidad" style="margin-bottom:0"><button class="del-btn" onclick="delIngr(this)">✕</button></div>`;
+      $('step-list').innerHTML = `<div class="step-row"><div class="step-num">1</div><textarea class="input" placeholder="Describí el primer paso..." rows="2" style="margin-bottom:0"></textarea><button class="del-btn" onclick="delStep(this)" style="margin-top:10px;">✕</button></div>`;
       showToast('¡Receta publicada! 🎉');
       nav('home');
-    } catch (err) { showToast('Error: ' + err.message); }
-    btn.disabled=false; btn.textContent='Publicar receta 🚀';
+    } catch (err) {
+      console.error(err);
+      showToast('Error: ' + err.message);
+    }
+    btn.disabled = false;
+    btn.textContent = 'Publicar receta 🚀';
   };
 
   // ═══════════════════════════════════════════════════════════════
   // BLOQUE: COMMUNITY FEED - LÓGICA
   // ═══════════════════════════════════════════════════════════════
   function loadCommunity() {
-    const q = query(collection(db, "community"), orderBy("createdAt","desc"));
+    const q = query(collection(db, "community"), orderBy("createdAt", "desc"));
     onSnapshot(q, snap => {
-      const list = $('community-posts-list');
+      // FIX #8: Usar innerHTML en vez de outerHTML para no destruir el nodo
+      const container = $('community-posts-list');
+      container.innerHTML = '';
+
       if (snap.empty) {
-        list.innerHTML = `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">Nadie habló todavía.<br>¡Rompé el hielo!</div></div>`;
+        container.innerHTML = `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">Nadie habló todavía.<br>¡Rompé el hielo!</div></div>`;
         return;
       }
-      list.outerHTML = '<div id="community-posts-list"></div>';
-      const container = $('community-posts-list');
+
       snap.docs.forEach(d => {
         const p = d.data();
         const div = document.createElement('div');
@@ -1844,10 +1991,10 @@
           </div>
           <div class="post-text">${p.text}</div>
           <div class="post-reactions">
-            ${reactionVotes.map(e=>{
-              const count=(p.votes||{})[e]||0;
-              const voted=currentUser&&((p.votedBy||{})[e]||[]).includes(currentUser.uid);
-              return `<span class="emoji-vote ${voted?'voted':''}" onclick="votePost('${d.id}','${e}')">${e} ${count||''}</span>`;
+            ${reactionVotes.map(e => {
+              const count = (p.votes || {})[e] || 0;
+              const voted = currentUser && ((p.votedBy || {})[e] || []).includes(currentUser.uid);
+              return `<span class="emoji-vote ${voted ? 'voted' : ''}" onclick="votePost('${d.id}','${e}')">${e} ${count || ''}</span>`;
             }).join('')}
           </div>`;
         container.appendChild(div);
@@ -1900,41 +2047,57 @@
   window.vote = function(side) {
     if (currentVote) return showToast('Ya votaste hoy 😄');
     currentVote = side;
-    const va = Math.floor(Math.random() * 40 + 30);
+
+    // FIX #7: Porcentajes deterministas por día en vez de random
+    const daySeed = new Date().getDate();
+    const base = 40 + (daySeed % 25);
+    const va = side === 'a' ? base + 8 : base - 5;
     const vb = 100 - va;
+
     $('vote-bar').style.display = 'flex';
-    $('vbar-a').style.width = va + '%';
-    $('vbar-b').style.width = vb + '%';
+    $('vbar-a').style.width = Math.max(10, va) + '%';
+    $('vbar-b').style.width = Math.max(10, vb) + '%';
     $('vote-result').style.display = 'block';
-    $('vote-result').textContent = `${todayDebate.a}: ${va}% · ${todayDebate.b}: ${vb}%`;
-    $('vbtn-a').className = 'vote-btn' + (side==='a'?' voted-a':'');
-    $('vbtn-b').className = 'vote-btn' + (side==='b'?' voted-b':'');
+    $('vote-result').textContent = `${todayDebate.a}: ${Math.max(10, va)}% · ${todayDebate.b}: ${Math.max(10, vb)}%`;
+    $('vbtn-a').className = 'vote-btn' + (side === 'a' ? ' voted-a' : '');
+    $('vbtn-b').className = 'vote-btn' + (side === 'b' ? ' voted-b' : '');
     showToast('¡Voto registrado! 🗳️');
   };
 
   // ═══════════════════════════════════════════════════════════════
   // BLOQUE: PERFIL - LÓGICA
   // ═══════════════════════════════════════════════════════════════
-  function loadProfile() {
-    if (!currentUser) { updateProfileView(); return; }
-    const myRecipes = allRecipes.filter(r => r.uid === currentUser.uid);
-    const totalLikes = myRecipes.reduce((a,r) => a + (r.likes||0), 0);
-    const totalComments = myRecipes.reduce((a,r) => a + (r.commentCount||0), 0);
-    $('stat-recetas').textContent = myRecipes.length;
-    $('stat-likes').textContent = totalLikes;
-    $('stat-comments').textContent = totalComments;
 
+  // SUB-BLOQUE: Stats del perfil
+  function calcProfileStats() {
+    const myRecipes = allRecipes.filter(r => r.uid === currentUser.uid);
+    const totalLikes = myRecipes.reduce((a, r) => a + (r.likes || 0), 0);
+    const totalComments = myRecipes.reduce((a, r) => a + (r.commentCount || 0), 0);
+    return { myRecipes, totalLikes, totalComments };
+  }
+
+  // SUB-BLOQUE: Grid de recetas propias
+  function renderMyRecipesGrid(myRecipes) {
     const grid = $('my-recipes-grid');
     if (myRecipes.length === 0) {
       grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">👨‍🍳</div><div class="empty-text">Todavía no publicaste recetas.<br>¡Animáte!</div></div>`;
       return;
     }
     const bgColors = ['#FAEEDA','#E1F5EE','#FAECE7','#E6F1FB','#F3E8FA'];
-    grid.innerHTML = myRecipes.map((r,i) => `
+    grid.innerHTML = myRecipes.map((r, i) => `
       <div class="mini-card" onclick="openRecipeDetail('${r.id}')">
-        <div class="mini-banner" style="background:${bgColors[i%bgColors.length]}">${r.emoji||'🍳'}</div>
+        <div class="mini-banner" style="background:${bgColors[i % bgColors.length]}">${r.emoji || '🍳'}</div>
         <div class="mini-title">${r.title}</div>
       </div>`).join('');
+  }
+
+  function loadProfile() {
+    if (!currentUser) { updateProfileView(); return; }
+    const { myRecipes, totalLikes, totalComments } = calcProfileStats();
+    $('stat-recetas').textContent = myRecipes.length;
+    $('stat-likes').textContent = totalLikes;
+    $('stat-comments').textContent = totalComments;
+    renderMyRecipesGrid(myRecipes);
   }
   </script>
 </body>
