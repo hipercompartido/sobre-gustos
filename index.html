@@ -804,21 +804,21 @@
       <div class="form-group">
         <label class="form-label">Tu nivel</label>
         <div style="display:flex;flex-direction:column;gap:8px;" id="level-picker">
-          <div class="level-opt" onclick="pickLevel(this,'foodie')">
-            <div class="level-opt-emoji">🍽️</div>
-            <div><div class="level-opt-label">Foodie</div><div class="level-opt-desc">Pruebo y opino</div></div>
+                   <div class="level-opt" onclick="pickLevel(this,'inicio')">
+            <div class="level-opt-emoji">🌱</div>
+            <div><div class="level-opt-label">Inicio</div><div class="level-opt-desc">Estoy arrancando</div></div>
           </div>
-          <div class="level-opt" onclick="pickLevel(this,'casero')">
-            <div class="level-opt-emoji">👨‍🍳</div>
-            <div><div class="level-opt-label">Casero/a</div><div class="level-opt-desc">Cocino en casa</div></div>
+          <div class="level-opt" onclick="pickLevel(this,'prueba')">
+            <div class="level-opt-emoji">🍳</div>
+            <div><div class="level-opt-label">En práctica</div><div class="level-opt-desc">Voy cocinando</div></div>
           </div>
-          <div class="level-opt" onclick="pickLevel(this,'cocinero')">
-            <div class="level-opt-emoji">🧑‍🍳</div>
-            <div><div class="level-opt-label">Cocinero/a</div><div class="level-opt-desc">Tengo experiencia</div></div>
+          <div class="level-opt" onclick="pickLevel(this,'punto')">
+            <div class="level-opt-emoji">🍲</div>
+            <div><div class="level-opt-label">A punto</div><div class="level-opt-desc">Tengo mis platos</div></div>
           </div>
-          <div class="level-opt" onclick="pickLevel(this,'chef')">
-            <div class="level-opt-emoji">👨‍🍳</div>
-            <div><div class="level-opt-label">Chef</div><div class="level-opt-desc">Soy profesional</div></div>
+          <div class="level-opt" onclick="pickLevel(this,'firma')">
+            <div class="level-opt-emoji">✨</div>
+            <div><div class="level-opt-label">Con firma</div><div class="level-opt-desc">Tengo estilo propio</div></div>
           </div>
         </div>
       </div>
@@ -1033,7 +1033,7 @@
     }
     showToast('¡Recetas de ejemplo cargadas! 🎉');
   }
-      const LEVELS = { foodie: { emoji: '🍽️', label: 'Foodie' }, casero: { emoji: '👨‍🍳', label: 'Casero/a' }, cocinero: { emoji: '🧑‍🍳', label: 'Cocinero/a' }, chef: { emoji: '👨‍🍳', label: 'Chef' } };
+        const LEVELS = { inicio: { emoji: '🌱', label: 'Inicio' }, prueba: { emoji: '🍳', label: 'En práctica' }, punto: { emoji: '🍲', label: 'A punto' }, firma: { emoji: '✨', label: 'Con firma' } };
 
   let editLevel = 'foodie';
 
@@ -1172,7 +1172,7 @@
         const user = $('auth-user').value.trim().replace(/[^a-zA-Z0-9_]/g,'');
         if (!name || !user) { $('auth-msg').textContent = 'Completá nombre y @usuario.'; return; }
         const cred = await createUserWithEmailAndPassword(auth, email, pass);
-        await addDoc(collection(db, "profiles"), { uid: cred.user.uid, email, name, user, level: 'foodie', bio: '', createdAt: new Date() });
+        await addDoc(collection(db, "profiles"), { uid: cred.user.uid, email, name, user, level: 'inicio', bio: '', createdAt: new Date() });
       } else {
         await signInWithEmailAndPassword(auth, email, pass);
       }
