@@ -1799,20 +1799,9 @@
         const btn = $('btn-publish');
     btn.disabled = true; btn.textContent = 'Publicando...';
     try {
-      const photoUrls = [];
-      for (let i = 0; i < pendingPhotos.length; i++) {
-        const res = await fetch(pendingPhotos[i]);
-        const blob = await res.blob();
-        const filename = Date.now() + '_' + i + '.jpg';
-        const storageRef = sRef(storage, 'recipes/' + filename);
-        await uploadBytes(storageRef, blob);
-        const url = await getDownloadURL(storageRef);
-        photoUrls.push(url);
-      }
-
-      await addDoc(collection(db, "recipes"), {
+            await addDoc(collection(db, "recipes"), {
         title, story, tags, emoji: selectedEmoji, cookTime,
-        ingredients, steps, photos: photoUrls,
+        ingredients, steps, photos: pendingPhotos,
         uid: currentUserData.uid,
         name: currentUserData.name,
         user: currentUserData.user,
