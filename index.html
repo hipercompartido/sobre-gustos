@@ -1099,7 +1099,8 @@
       showToast('¡Perfil actualizado! ✅');
     } catch (err) { showToast('Error al guardar'); }
   };
-      window.openUserProfile = async function(uid) {
+     window.openUserProfile = async function(uid) {
+    showToast('uid: ' + uid);
     if (uid === 'seed') { showToast('Receta de ejemplo de la app'); return; }
     if (currentUser && uid === currentUser.uid) { closeUserProfile(null); nav('profile'); return; }
 
