@@ -791,10 +791,55 @@
       </div>
     </div>
   </div>
+    <!-- ═══════════════════════════════════════════════════════════════
+       BLOQUE: MODAL EDITAR PERFIL (HTML)
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay hidden" id="edit-profile-modal" onclick="closeEditProfile(event)">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div style="font-size:18px;font-weight:800;margin-bottom:16px;">Editar perfil</div>
+
+      <div class="form-group">
+        <label class="form-label">Nombre visible</label>
+        <input class="input" id="edit-name" placeholder="Tu nombre">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Bio (opcional)</label>
+        <textarea class="input" id="edit-bio" rows="2" placeholder="Un poco sobre vos, qué cocinás, de dónde sos..." maxlength="120" oninput="document.getElementById('bio-count').textContent=this.value.length"></textarea>
+        <div style="font-size:11px;color:var(--muted);text-align:right;margin-top:3px;"><span id="bio-count">0</span>/120</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Tu nivel</label>
+        <div style="display:flex;flex-direction:column;gap:8px;" id="level-picker">
+          <div class="level-opt" onclick="pickLevel(this,'inicio')">
+            <div class="level-opt-emoji">🌱</div>
+            <div><div class="level-opt-label">Inicio</div><div class="level-opt-desc">Estoy arrancando</div></div>
+          </div>
+          <div class="level-opt" onclick="pickLevel(this,'prueba')">
+            <div class="level-opt-emoji">🍳</div>
+            <div><div class="level-opt-label">En práctica</div><div class="level-opt-desc">Voy cocinando</div></div>
+          </div>
+          <div class="level-opt" onclick="pickLevel(this,'punto')">
+            <div class="level-opt-emoji">🍲</div>
+            <div><div class="level-opt-label">A punto</div><div class="level-opt-desc">Tengo mis platos</div></div>
+          </div>
+          <div class="level-opt" onclick="pickLevel(this,'firma')">
+            <div class="level-opt-emoji">✨</div>
+            <div><div class="level-opt-label">Con firma</div><div class="level-opt-desc">Tengo estilo propio</div></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn" onclick="saveProfile()">Guardar cambios</button>
+      <button class="btn outline" onclick="closeEditProfile(null)" style="margin-top:4px;">Cancelar</button>
+    </div>
+  </div>
   <div class="modal-overlay hidden" id="user-profile-modal" onclick="closeUserProfile(event)">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div id="user-profile-body" style="padding:40px;text-align:center;font-size:20px;font-weight:bold;">TEST VISUAL</div>
+<div id="user-profile-body"></div>
     </div>
   </div>
 
@@ -841,50 +886,6 @@
       <button class="btn" onclick="closePrivacy(null)" style="margin-top:16px;">Cerrar</button>
       
   
-    <!-- ═══════════════════════════════════════════════════════════════
-       BLOQUE: MODAL EDITAR PERFIL (HTML)
-       ═══════════════════════════════════════════════════════════════ -->
-  <div class="modal-overlay hidden" id="edit-profile-modal" onclick="closeEditProfile(event)">
-    <div class="modal-sheet">
-      <div class="modal-handle"></div>
-      <div style="font-size:18px;font-weight:800;margin-bottom:16px;">Editar perfil</div>
-
-      <div class="form-group">
-        <label class="form-label">Nombre visible</label>
-        <input class="input" id="edit-name" placeholder="Tu nombre">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Bio (opcional)</label>
-              <textarea class="input" id="edit-bio" rows="2" placeholder="Un poco sobre vos, qué cocinás, de dónde sos..." maxlength="120" oninput="document.getElementById('bio-count').textContent=this.value.length"></textarea>
-        <div style="font-size:11px;color:var(--muted);text-align:right;margin-top:3px;"><span id="bio-count">0</span>/120</div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Tu nivel</label>
-        <div style="display:flex;flex-direction:column;gap:8px;" id="level-picker">
-                   <div class="level-opt" onclick="pickLevel(this,'inicio')">
-            <div class="level-opt-emoji">🌱</div>
-            <div><div class="level-opt-label">Inicio</div><div class="level-opt-desc">Estoy arrancando</div></div>
-          </div>
-          <div class="level-opt" onclick="pickLevel(this,'prueba')">
-            <div class="level-opt-emoji">🍳</div>
-            <div><div class="level-opt-label">En práctica</div><div class="level-opt-desc">Voy cocinando</div></div>
-          </div>
-          <div class="level-opt" onclick="pickLevel(this,'punto')">
-            <div class="level-opt-emoji">🍲</div>
-            <div><div class="level-opt-label">A punto</div><div class="level-opt-desc">Tengo mis platos</div></div>
-          </div>
-          <div class="level-opt" onclick="pickLevel(this,'firma')">
-            <div class="level-opt-emoji">✨</div>
-            <div><div class="level-opt-label">Con firma</div><div class="level-opt-desc">Tengo estilo propio</div></div>
-          </div>
-        </div>
-      </div>
-
-      <button class="btn" onclick="saveProfile()">Guardar cambios</button>
-      <button class="btn outline" onclick="closeEditProfile(null)" style="margin-top:4px;">Cancelar</button>
-    </div>
   </div>
   <script type="module">
   // ═══════════════════════════════════════════════════════════════
@@ -1144,15 +1145,14 @@
     } catch (err) { showToast('Error al guardar'); }
   };
      window.openUserProfile = async function(uid) {
-    showToast('uid: ' + uid);
+    
     if (uid === 'seed') { showToast('Receta de ejemplo de la app'); return; }
-    showToast('paso 1');
+    
     if (currentUser && uid === currentUser.uid) { closeUserProfile(null); nav('profile'); return; }
-    showToast('paso 2');
-
-    showToast('buscando perfil...');
+   
+   
     const profSnap = await getDocs(query(collection(db, "profiles"), where("uid", "==", uid)));
-    showToast('encontré: ' + profSnap.size);
+    
     let profile = null;
     profSnap.forEach(d => { if (d.data().uid === uid) profile = { id: d.id, ...d.data() }; });
     if (!profile) { showToast('Usuario no encontrado'); return; }
@@ -1206,7 +1206,7 @@
       ${recipesHtml}
       <button class="btn outline" onclick="closeUserProfile(null)" style="margin-top:12px;">Cerrar</button>`;
 
-    showToast('abriendo modal...');
+    
     $('user-profile-modal').classList.remove('hidden');
     showToast('modal abierto');
   };
@@ -1485,7 +1485,7 @@
             <div class="recipe-user-row">
               <div class="av" style="${avatarStyle(r.name)}">${initials(r.name)}</div>
               <div>
-                <div class="recipe-author" style="cursor:pointer;" onclick="openUserProfile('${r.uid}').catch(e=>showToast(e.message))">${r.name||'Chef'}</div>
+                <div class="recipe-author" style="cursor:pointer;" >${r.name||'Chef'}</div>
                 <div class="recipe-date">@${r.user||'anon'} · ${fmtDate(r.createdAt)}${r.cookTime ? ' · ⏱ '+r.cookTime : ''}</div>
               </div>
             </div>
