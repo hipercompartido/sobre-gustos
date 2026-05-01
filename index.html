@@ -446,6 +446,11 @@
       width: 36px; height: 4px; border-radius: 2px;
       background: var(--border); margin: 0 auto 16px;
     }
+        .privacy-body { font-size: 14px; color: var(--text); line-height: 1.65; }
+    .privacy-body h2 { font-size: 16px; font-weight: 700; color: var(--text); margin: 16px 0 6px; }
+    .privacy-body h2:first-child { margin-top: 0; }
+    .privacy-body p { color: #555; margin-bottom: 10px; }
+    .privacy-body a { color: var(--primary); text-decoration: none; }
   </style>
 </head>
 <body>
@@ -678,8 +683,9 @@
             <div class="my-recipes-grid" id="my-recipes-grid">
               <div class="loading-state" style="grid-column:1/-1;">Cargando...</div>
             </div>
-            <div style="padding:14px;">
+                      <div style="padding:0 14px;">
               <button class="btn outline" onclick="doLogout()">Cerrar sesión</button>
+              <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:12px;cursor:pointer;" onclick="openPrivacy()">Política de privacidad</p>
             </div>
             <div style="height:20px;"></div>
           </div>
@@ -714,7 +720,40 @@
       <div id="modal-body"></div>
     </div>
   </div>
+  <!-- ═══════════════════════════════════════════════════════════════
+       BLOQUE: MODAL PRIVACIDAD (HTML)
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay hidden" id="privacy-modal" onclick="closePrivacy(event)">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="privacy-body">
+        <h2>Política de Privacidad</h2>
+        <p>Sobre Gustos es un proyecto comunitario. Te contamos qué hacemos con tus datos.</p>
 
+        <h2>Qué datos guardamos</h2>
+        <p>Tu nombre visible, @usuario y email. Eso es todo. No pedimos ni guardamos ubicación, fotos ni datos sensibles.</p>
+
+        <h2>Para qué los usamos</h2>
+        <p>Para identificar tus recetas y comentarios. Para que puedas recuperar tu cuenta. Nada más.</p>
+
+        <h2>No vendemos datos</h2>
+        <p>Tus datos no se venden a terceros, marcas, ni nadie. Si en el futuro hubiese publicidad, sería contextual y sin compartir información personal de usuarios.</p>
+
+        <h2>Cómo almacenamos</h2>
+        <p>Usamos Firebase (Google). Los datos están en servidores de Google con sus políticas de seguridad. No tenemos acceso directo a las contraseñas — Firebase las maneja.</p>
+
+        <h2>Tus derechos</h2>
+        <p><a href="mailto:hipercompartido@gmail.com">Escribinos</a> si querés que borremos tu cuenta y todos tus datos. Lo hacemos sin chistes en menos de 48hs.</p>
+
+        <h2>Cookies y almacenamiento local</h2>
+        <p> Firebase usa cookies técnicas para mantener tu sesión abierta. No usamos cookies de rastreo ni de terceros con fines publicitarios.</p>
+
+        <h2>Cambios</h2>
+        <p>Si algo cambia acá, lo avisamos en la app. Fecha de última actualización: julio 2025.</p>
+      </div>
+      <button class="btn" onclick="closePrivacy(null)" style="margin-top:16px;">Cerrar</button>
+    </div>
+  </div>
   <script type="module">
   // ═══════════════════════════════════════════════════════════════
   // BLOQUE: FIREBASE INIT
@@ -800,6 +839,14 @@
       } catch {
         showToast('No se pudo copiar el link');
       }
+    }
+  };
+      window.openPrivacy = function() {
+    $('privacy-modal').classList.remove('hidden');
+  };
+  window.closePrivacy = function(e) {
+    if (e === null || e.target === $('privacy-modal')) {
+      $('privacy-modal').classList.add('hidden');
     }
   };
   // ═══════════════════════════════════════════════════════════════
