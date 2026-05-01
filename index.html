@@ -1102,7 +1102,9 @@
      window.openUserProfile = async function(uid) {
     showToast('uid: ' + uid);
     if (uid === 'seed') { showToast('Receta de ejemplo de la app'); return; }
+    showToast('paso 1');
     if (currentUser && uid === currentUser.uid) { closeUserProfile(null); nav('profile'); return; }
+    showToast('paso 2');
 
     const profSnap = await getDocs(query(collection(db, "profiles"), where("uid", "==", uid)));
     let profile = null;
