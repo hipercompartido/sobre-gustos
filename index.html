@@ -1433,7 +1433,7 @@
             <div class="recipe-user-row">
               <div class="av" style="${avatarStyle(r.name)}">${initials(r.name)}</div>
               <div>
-                <div class="recipe-author" style="cursor:pointer;" onclick="showToast('FUNCIONA')">${r.name||'Chef'}</div>
+                <div class="recipe-author" style="cursor:pointer;" onclick="openUserProfile('${r.uid}').catch(e=>showToast(e.message))">${r.name||'Chef'}</div>
                 <div class="recipe-date">@${r.user||'anon'} · ${fmtDate(r.createdAt)}${r.cookTime ? ' · ⏱ '+r.cookTime : ''}</div>
               </div>
             </div>
