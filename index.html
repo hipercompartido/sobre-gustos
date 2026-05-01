@@ -853,7 +853,8 @@
   const fbApp = initializeApp(firebaseConfig);
   const auth = getAuth(fbApp);
   const db = getFirestore(fbApp);
-      seedRecipes();
+      let seedDone = false;
+  seedRecipes();
 
   // ═══════════════════════════════════════════════════════════════
   // BLOQUE: STATE GLOBAL
@@ -865,7 +866,7 @@
   let authMode = 'register';
   let selectedEmoji = '🍝';
   let currentVote = null;
-      let seedDone = false;
+     
 
   const $ = id => document.getElementById(id);
 
