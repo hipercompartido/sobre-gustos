@@ -386,6 +386,14 @@
     }
     .mini-banner { height: 64px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
     .mini-title { padding: 8px 10px 10px; font-size: 13px; font-weight: 600; color: var(--text); }
+        .follow-btn {
+      padding: 8px 24px; border-radius: 20px; font-size: 13px;
+      font-weight: 600; cursor: pointer; border: none; font-family: inherit;
+      transition: all 0.15s; margin-top: 10px;
+    }
+    .follow-btn.not-following { background: var(--primary); color: white; }
+    .follow-btn.not-following:hover { opacity: 0.9; }
+    .follow-btn.following { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
     .level-badge {
       display: inline-flex; align-items: center; gap: 4px;
       padding: 3px 10px; border-radius: 20px; font-size: 11px;
@@ -780,6 +788,15 @@
         <p>Si algo cambia acá, lo avisamos en la app. Fecha de última actualización: julio 2025.</p>
       </div>
       <button class="btn" onclick="closePrivacy(null)" style="margin-top:16px;">Cerrar</button>
+        <!-- ═══════════════════════════════════════════════════════════════
+       BLOQUE: MODAL PERFIL AJENO (HTML)
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay hidden" id="user-profile-modal" onclick="closeUserProfile(event)">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div id="user-profile-body"></div>
+    </div>
+  </div>
     </div>
   </div>
     <!-- ═══════════════════════════════════════════════════════════════
@@ -837,7 +854,7 @@
     onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
   import {
-    getFirestore, collection, addDoc, doc, updateDoc, increment,
+        getFirestore, collection, addDoc, doc, updateDoc, increment, deleteDoc,
     query, orderBy, onSnapshot, getDocs, where, getDoc, arrayUnion, arrayRemove
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -1081,6 +1098,95 @@
       $('edit-profile-modal').classList.add('hidden');
       showToast('¡Perfil actualizado! ✅');
     } catch (err) { showToast('Error al guardar'); }
+  };
+      window.openUserProfile = async function(uid) {
+    if (uid === 'seed') { showToast('Receta de ejemplo de la app'); return; }
+    if (currentUser && uid === currentUser.uid) { closeUserProfile(null); nav('profile'); return; }
+
+    const profSnap = await getDocs(query(collection(db, "profiles"), where("uid", "==", uid)));
+    let profile = null;
+    profSnap.forEach(d => { if (d.data().uid === uid) profile = { id: d.id, ...d.data() }; });
+    if (!profile) { showToast('Usuario no encontrado'); return; }
+
+    const name = profile.name || 'Chef';
+    const user = profile.user || 'anon';
+    const bio = profile.bio || '';
+    const level = profile.level || 'inicio';
+    const lvl = LEVELS[level] || LEVELS.inicio;
+    const userRecipes = allRecipes.filter(r => r.uid === uid);
+
+    let isFollowing = false;
+    let followerCount = 0;
+    let followingCount = 0;
+
+    if (currentUser) {
+      const fSnap = await getDocs(query(collection(db, "follows"), where("from", "==", currentUser.uid), where("to", "==", uid)));
+      isFollowing = !fSnap.empty;
+    }
+    followerCount = (await getDocs(query(collection(db, "follows"), where("to", "==", uid)))).size;
+    followingCount = (await getDocs(query(collection(db, "follows"), where("from", "==", uid)))).size;
+
+    const bgColors = ['#FAEEDA','#E1F5EE','#FAECE7','#E6F1FB','#F3E8FA'];
+    let recipesHtml = '';
+    if (userRecipes.length > 0) {
+      recipesHtml = `<div class="section-title">Recetas</div><div class="my-recipes-grid">
+        ${userRecipes.map((r,i) => `<div class="mini-card" onclick="closeUserProfile(null);openRecipeDetail('${r.id}')">
+          <div class="mini-banner" style="background:${bgColors[i%bgColors.length]}">${r.emoji||'🍳'}</div>
+          <div class="mini-title">${r.title}</div>
+        </div>`).join('')}</div>`;
+    }
+
+    const followBtnHtml = currentUser
+      ? `<button class="follow-btn ${isFollowing?'following':'not-following'}" id="follow-btn-${uid}" onclick="toggleFollow('${uid}','${profile.id}')">${isFollowing?'Siguiendo':'Seguir'}</button>`
+      : `<button class="follow-btn not-following" onclick="requireAuth('Iniciá sesión para seguir a alguien')">Seguir</button>`;
+
+    $('user-profile-body').innerHTML = `
+      <div style="text-align:center;padding:10px 0 16px;">
+        <div class="big-avatar" style="${avatarStyle(name)};margin:0 auto 10px;">${initials(name)}</div>
+        <div style="font-size:20px;font-weight:800;">${name}</div>
+        <div class="level-badge" style="margin-top:6px;">${lvl.emoji} ${lvl.label}</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:2px;">@${user}</div>
+        ${bio ? `<div class="profile-bio">${bio}</div>` : ''}
+        <div style="display:flex;justify-content:center;gap:24px;margin-top:12px;">
+          <div class="stat"><div class="stat-num">${userRecipes.length}</div><div class="stat-lab">Recetas</div></div>
+          <div class="stat"><div class="stat-num" id="up-followers-${uid}">${followerCount}</div><div class="stat-lab">Seguidores</div></div>
+          <div class="stat"><div class="stat-num">${followingCount}</div><div class="stat-lab">Siguiendo</div></div>
+        </div>
+        ${followBtnHtml}
+      </div>
+      ${recipesHtml}
+      <button class="btn outline" onclick="closeUserProfile(null)" style="margin-top:12px;">Cerrar</button>`;
+
+    $('user-profile-modal').classList.remove('hidden');
+  };
+
+  window.closeUserProfile = function(e) {
+    if (e === null || e.target === $('user-profile-modal')) {
+      $('user-profile-modal').classList.add('hidden');
+    }
+  };
+
+  window.toggleFollow = async function(uid, profileDocId) {
+    if (!currentUser) { requireAuth('Iniciá sesión para seguir'); return; }
+    const btn = $('follow-btn-' + uid);
+    if (!btn) return;
+    const fSnap = await getDocs(query(collection(db, "follows"), where("from", "==", currentUser.uid), where("to", "==", uid)));
+    const isFollowing = !fSnap.empty;
+    if (isFollowing) {
+      fSnap.forEach(d => deleteDoc(doc(db, "follows", d.id)));
+      btn.className = 'follow-btn not-following';
+      btn.textContent = 'Seguir';
+      const counter = $('up-followers-' + uid);
+      if (counter) counter.textContent = Math.max(0, parseInt(counter.textContent) - 1);
+      showToast('Dejaste de seguir');
+    } else {
+      await addDoc(collection(db, "follows"), { from: currentUser.uid, to: uid, createdAt: new Date() });
+      btn.className = 'follow-btn following';
+      btn.textContent = 'Siguiendo';
+      const counter = $('up-followers-' + uid);
+      if (counter) counter.textContent = parseInt(counter.textContent) + 1;
+      showToast('¡Ahora los seguís!');
+    }
   };
     window.showToast = function(msg) {
     const t = $('toast');
@@ -1327,7 +1433,7 @@
             <div class="recipe-user-row">
               <div class="av" style="${avatarStyle(r.name)}">${initials(r.name)}</div>
               <div>
-                <div class="recipe-author">${r.name||'Chef'}</div>
+                <div class="recipe-author" style="cursor:pointer;" onclick="openUserProfile('${r.uid}')">${r.name||'Chef'}</div>
                 <div class="recipe-date">@${r.user||'anon'} · ${fmtDate(r.createdAt)}${r.cookTime ? ' · ⏱ '+r.cookTime : ''}</div>
               </div>
             </div>
@@ -1510,7 +1616,7 @@
     body.innerHTML = `
       <div style="background:${bg};border-radius:16px;height:120px;display:flex;align-items:center;justify-content:center;font-size:60px;margin-bottom:14px;">${r.emoji||'🍳'}</div>
       <div style="font-size:22px;font-weight:800;color:var(--text);margin-bottom:4px;">${r.title}</div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:${r.story?'12px':'4px'};">Por ${r.name||'Chef'} · @${r.user||'anon'}${r.cookTime?' · ⏱ '+r.cookTime:''}</div>
+            <div style="font-size:13px;color:var(--muted);margin-bottom:${r.story?'12px':'4px'};">Por <span style="cursor:pointer;text-decoration:underline dotted var(--muted);text-underline-offset:2px;" onclick="closeModal(null);openUserProfile('${r.uid}')">${r.name||'Chef'}</span> · @${r.user||'anon'}${r.cookTime?' · ⏱ '+r.cookTime:''}</div>
       ${r.story ? `<div style="font-size:14px;color:#555;line-height:1.55;margin-bottom:14px;padding:12px;background:var(--light);border-radius:12px;border-left:3px solid var(--primary);">${r.story}</div>` : ''}
       ${ingrHtml}
       ${stepsHtml}
