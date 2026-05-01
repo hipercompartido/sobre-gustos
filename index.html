@@ -361,6 +361,41 @@
       font-size: 12px; font-weight: 700; margin-top: 10px;
     }
     .step-row textarea { flex: 1; min-height: 56px; resize: none; }
+        .photo-upload-area {
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .photo-add-btn {
+      width: 72px; height: 72px; border-radius: 12px;
+      border: 2px dashed var(--border); background: var(--bg);
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; cursor: pointer; font-size: 11px;
+      color: var(--muted); gap: 3px; transition: all 0.15s;
+    }
+    .photo-add-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .photo-add-btn span { font-size: 20px; }
+    .photo-thumb {
+      width: 72px; height: 72px; border-radius: 12px;
+      overflow: hidden; position: relative;
+    }
+    .photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-thumb .photo-del {
+      position: absolute; top: 3px; right: 3px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: rgba(0,0,0,0.6); color: white; border: none;
+      cursor: pointer; font-size: 12px; display: flex;
+      align-items: center; justify-content: center;
+    }
+    .recipe-photos {
+      display: flex; gap: 4px; padding: 0 14px 8px;
+      overflow-x: auto;
+    }
+    .recipe-photos::-webkit-scrollbar { display: none; }
+    .recipe-photos img {
+      height: 80px; border-radius: 8px; flex-shrink: 0; object-fit: cover;
+    }
+    .detail-photo {
+      width: 100%; border-radius: 12px; margin-bottom: 10px; object-fit: cover;
+    }
 
   /* ═══════════════════════════════════════════════════════════════
      BLOQUE: PERFIL - ESTILOS
@@ -628,6 +663,16 @@
               </div>
             </div>
             <div class="form-group">
+                          <div class="form-group">
+              <label class="form-label">Fotos (máx 4, opcional)</label>
+              <div class="photo-upload-area" id="photo-upload-area">
+                <div class="photo-add-btn" onclick="document.getElementById('photo-input').click()">
+                  <span>📷</span>
+                  Agregar
+                </div>
+              </div>
+              <input type="file" id="photo-input" accept="image/*" multiple style="display:none" onchange="handlePhotos(this.files)">
+            </div>
               <label class="form-label">La historia detrás 📖</label>
               <textarea class="input" id="r-story" rows="3" placeholder="Opcional pero recomendado: contá de dónde viene esta receta, quién te la enseñó, qué recuerdo tiene..."></textarea>
             </div>
@@ -854,6 +899,7 @@
         getFirestore, collection, addDoc, doc, updateDoc, increment, deleteDoc,
     query, orderBy, onSnapshot, getDocs, where, getDoc, arrayUnion, arrayRemove
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyB6Mx7p29ptV2p8j9F-C66AsHRGe4ASplw",
@@ -867,6 +913,7 @@
   const fbApp = initializeApp(firebaseConfig);
   const auth = getAuth(fbApp);
   const db = getFirestore(fbApp);
+      const storage = getStorage(fbApp);
       let seedDone = false;
   seedRecipes();
 
@@ -1433,6 +1480,7 @@
       html += `
         <div class="recipe-card" id="rcard-${r.id}">
           <div class="recipe-emoji-banner" style="background:${bg}">${r.emoji||'🍳'}</div>
+          ${(r.photos && r.photos.length) ? `<div class="recipe-photos">${r.photos.map(p=>`<img src="${p}" loading="lazy">`).join('')}</div>` : ''}
           <div class="recipe-body">
             <div class="recipe-user-row">
               <div class="av" style="${avatarStyle(r.name)}">${initials(r.name)}</div>
@@ -1619,6 +1667,7 @@
 
     body.innerHTML = `
       <div style="background:${bg};border-radius:16px;height:120px;display:flex;align-items:center;justify-content:center;font-size:60px;margin-bottom:14px;">${r.emoji||'🍳'}</div>
+      ${(r.photos && r.photos.length) ? r.photos.map(p=>`<img class="detail-photo" src="${p}" loading="lazy">`).join('') : ''}
       <div style="font-size:22px;font-weight:800;color:var(--text);margin-bottom:4px;">${r.title}</div>
             <div style="font-size:13px;color:var(--muted);margin-bottom:${r.story?'12px':'4px'};">Por <span style="cursor:pointer;text-decoration:underline dotted var(--muted);text-underline-offset:2px;" onclick="closeModal(null);openUserProfile('${r.uid}')">${r.name||'Chef'}</span> · @${r.user||'anon'}${r.cookTime?' · ⏱ '+r.cookTime:''}</div>
       ${r.story ? `<div style="font-size:14px;color:#555;line-height:1.55;margin-bottom:14px;padding:12px;background:var(--light);border-radius:12px;border-left:3px solid var(--primary);">${r.story}</div>` : ''}
@@ -1671,7 +1720,59 @@
   function renumberSteps() {
     document.querySelectorAll('#step-list .step-num').forEach((el,i) => el.textContent = i+1);
   }
+  let pendingPhotos = [];
 
+  window.handlePhotos = function(files) {
+    if (!files || files.length === 0) return;
+    const remaining = 4 - pendingPhotos.length;
+    if (remaining <= 0) { showToast('Máximo 4 fotos'); return; }
+    const toProcess = Array.from(files).slice(0, remaining);
+
+    toProcess.forEach(file => {
+      if (file.size > 5 * 1024 * 1024) { showToast('La imagen es muy grande (máx 5MB)'); return; }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        compressImage(e.target.result, 800, function(compressed) {
+          pendingPhotos.push(compressed);
+          renderPhotoThumbs();
+        });
+      };
+      reader.readAsDataURL(file);
+    });
+    $('photo-input').value = '';
+  };
+
+  function compressImage(dataUrl, maxW, callback) {
+    const img = new Image();
+    img.onload = function() {
+      const ratio = Math.min(maxW / img.width, 1);
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width * ratio;
+      canvas.height = img.height * ratio;
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      callback(canvas.toDataURL('image/jpeg', 0.7));
+    };
+    img.src = dataUrl;
+  }
+
+  function renderPhotoThumbs() {
+    const area = $('photo-upload-area');
+    area.querySelectorAll('.photo-thumb').forEach(el => el.remove());
+    pendingPhotos.forEach((src, i) => {
+      const div = document.createElement('div');
+      div.className = 'photo-thumb';
+      div.innerHTML = `<img src="${src}"><button class="photo-del" onclick="removePhoto(${i})">✕</button>`;
+      area.appendChild(div);
+    });
+    const addBtn = area.querySelector('.photo-add-btn');
+    if (pendingPhotos.length >= 4 && addBtn) addBtn.style.display = 'none';
+    else if (addBtn) addBtn.style.display = '';
+  }
+
+  window.removePhoto = function(index) {
+    pendingPhotos.splice(index, 1);
+    renderPhotoThumbs();
+  };
   window.publishRecipe = async function() {
     if (!requireAuth('Registrate para publicar recetas 🚀')) return;
     const title = $('r-title').value.trim();
@@ -1695,12 +1796,23 @@
       if (v) steps.push(v);
     });
 
-    const btn = $('btn-publish');
+        const btn = $('btn-publish');
     btn.disabled = true; btn.textContent = 'Publicando...';
     try {
+      const photoUrls = [];
+      for (let i = 0; i < pendingPhotos.length; i++) {
+        const res = await fetch(pendingPhotos[i]);
+        const blob = await res.blob();
+        const filename = Date.now() + '_' + i + '.jpg';
+        const storageRef = sRef(storage, 'recipes/' + filename);
+        await uploadBytes(storageRef, blob);
+        const url = await getDownloadURL(storageRef);
+        photoUrls.push(url);
+      }
+
       await addDoc(collection(db, "recipes"), {
         title, story, tags, emoji: selectedEmoji, cookTime,
-        ingredients, steps,
+        ingredients, steps, photos: photoUrls,
         uid: currentUserData.uid,
         name: currentUserData.name,
         user: currentUserData.user,
@@ -1709,6 +1821,7 @@
         reactions: {}, reactedBy: {}
       });
       $('r-title').value=''; $('r-story').value=''; $('r-tags').value=''; $('r-time').value='';
+            pendingPhotos = []; renderPhotoThumbs();
       $('ingr-list').innerHTML=`<div class="ingr-row"><input class="input" placeholder="Ingrediente" style="margin-bottom:0"><input class="input qty" placeholder="Cantidad" style="margin-bottom:0"><button class="del-btn" onclick="delIngr(this)">✕</button></div>`;
       $('step-list').innerHTML=`<div class="step-row"><div class="step-num">1</div><textarea class="input" placeholder="Describí el primer paso..." rows="2" style="margin-bottom:0"></textarea><button class="del-btn" onclick="delStep(this)" style="margin-top:10px;">✕</button></div>`;
       showToast('¡Receta publicada! 🎉');
